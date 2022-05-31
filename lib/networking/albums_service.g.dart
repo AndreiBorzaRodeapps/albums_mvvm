@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'rest_help.dart';
+part of 'albums_service.dart';
 
 // **************************************************************************
 // RetrofitGenerator
@@ -8,8 +8,8 @@ part of 'rest_help.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps
 
-class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl}) {
+class _AlbumService implements AlbumService {
+  _AlbumService(this._dio, {this.baseUrl}) {
     baseUrl ??= 'https://jsonplaceholder.typicode.com';
   }
 
