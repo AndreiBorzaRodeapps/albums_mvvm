@@ -1,11 +1,10 @@
 import 'package:albums_mvvm/screens/main_screen.dart';
 import 'package:flutter/material.dart';
-
+import '../theming/app_images.dart';
+import '../theming/app_theme.dart';
 
 class NoInternetScreen extends StatelessWidget {
   static const routeName = '/no-internet';
-  final urlPic = 'assets/images/no_internet.png';
-
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +20,11 @@ class NoInternetScreen extends StatelessWidget {
             padding: const EdgeInsets.symmetric(vertical: 75),
             child: Column(
               children: <Widget>[
-                Image.asset(urlPic),
+                Image.asset(AppImages.noInternetPhoto),
                 SizedBox(height: 40),
                 Text(
                   'Whoops!',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  style: AppTheming.headline6,
                 ),
                 SizedBox(height: 20),
                 Text('It seems that you\'re not connected to the internet!'),
@@ -40,14 +39,14 @@ class NoInternetScreen extends StatelessWidget {
                           .pushReplacementNamed(MainScreen.routeName);
                     },
                     child: Text('Try again'),
-                    color: Colors.black,
-                    textColor: Colors.white,
+                    color: AppTheming.altScreenPrimaryColor,
+                    textColor: AppTheming.altScreenAccentColor,
                   ),
                 ),
               ],
             ),
           ),
-          color: Colors.white,
+          color: AppTheming.altScreenAccentColor,
         ),
       ),
     );

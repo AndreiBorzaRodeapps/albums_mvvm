@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
 import '../screens/main_screen.dart';
+import '../theming/app_images.dart';
 
 class MySplashScreen extends StatelessWidget {
   static const routeName = '/splash';
@@ -10,7 +11,7 @@ class MySplashScreen extends StatelessWidget {
     return SplashScreenView(
       navigateRoute: MainScreen(),
       duration: 2000,
-      imageSrc: 'assets/images/splash_photo.png',
+      imageSrc: AppImages.splashPhoto,
       backgroundColor: Colors.white,
       imageSize: 300,
     );
