@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import './screens/splash_screen.dart';
+import 'screens/splash/splash_screen.dart';
 import 'screens/album_list/albums_list_screen.dart';
-import './screens/friends_screen.dart';
-import './screens/news_screen.dart';
-import './screens/no_internet_screen.dart';
-import './screens/profile_screen.dart';
+import 'screens/friends/friends_screen.dart';
+import 'screens/news/news_screen.dart';
+import 'screens/no_internet/no_internet_screen.dart';
+import 'screens/profile/profile_screen.dart';
 import './screens/main_screen.dart';
 
 import './theming/app_theme.dart';
@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: AppTheming.title,
       theme: ThemeData(
         textTheme: ThemeData().textTheme.copyWith(
@@ -24,6 +25,9 @@ class MyApp extends StatelessWidget {
               headline6: AppTheming.headline6,
               headline1: AppTheming.headline1,
               headline2: AppTheming.headline2,
+              headline3: AppTheming.headline3,
+              headline5: AppTheming.headline5,
+              bodyText1: AppTheming.bodytext1,
             ),
         fontFamily: AppTheming.fontFamily,
         primarySwatch: AppTheming.primarySwatch,

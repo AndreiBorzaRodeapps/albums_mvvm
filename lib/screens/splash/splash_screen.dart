@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:splash_screen_view/SplashScreenView.dart';
-import '../screens/main_screen.dart';
-import '../theming/app_images.dart';
+import '../main_screen.dart';
+import '../../theming/app_images.dart';
 
 class MySplashScreen extends StatelessWidget {
   static const routeName = '/splash';

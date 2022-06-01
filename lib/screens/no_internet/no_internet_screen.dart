@@ -1,7 +1,7 @@
 import 'package:albums_mvvm/screens/main_screen.dart';
 import 'package:flutter/material.dart';
-import '../theming/app_images.dart';
-import '../theming/app_theme.dart';
+import '../../theming/app_images.dart';
+import '../../theming/app_theme.dart';
 
 class NoInternetScreen extends StatelessWidget {
   static const routeName = '/no-internet';

@@ -1,11 +1,11 @@
 import 'package:albums_mvvm/screens/album_details/album_details_screen.dart';
 import 'package:albums_mvvm/screens/album_list/albums_list_screen.dart';
-import 'package:albums_mvvm/screens/no_internet_screen.dart';
+import 'package:albums_mvvm/screens/no_internet/no_internet_screen.dart';
 import 'package:flutter/material.dart';
 import '../models/album_model.dart';
-import '../screens/friends_screen.dart';
-import '../screens/news_screen.dart';
-import '../screens/profile_screen.dart';
+import 'friends/friends_screen.dart';
+import 'news/news_screen.dart';
+import 'profile/profile_screen.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 class MainScreen extends StatefulWidget {
@@ -30,12 +30,14 @@ class _MainScreenState extends State<MainScreen> {
   void initState() {
     super.initState();
     checkInternet();
+    _changeAlbum(null);
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     checkInternet();
+    _changeAlbum(null);
   }
 
   void _changeAlbum(AlbumModel? album) {

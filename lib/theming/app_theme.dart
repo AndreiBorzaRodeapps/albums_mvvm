@@ -34,6 +34,23 @@ class AppTheming {
     color: Colors.indigo[200],
   );
 
+  static const headline3 = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.bold,
+    color: Colors.white,
+  );
+
+  static var headline5 = TextStyle(
+    fontSize: 18,
+    color: Colors.indigo[900],
+    fontWeight: FontWeight.bold,
+  );
+
+  static var bodytext1 = TextStyle(
+    color: Colors.grey[700],
+    fontSize: 15,
+  );
+
   static const fontFamily = 'Nunito';
   static const title = 'Albums App';
 
