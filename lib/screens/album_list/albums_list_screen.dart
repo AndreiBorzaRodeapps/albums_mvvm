@@ -11,14 +11,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 class AlbumsListScreen extends StatelessWidget {
   static const routeName = '/albums_list';
   final Function(AlbumModel)? func;
-  final viewModel = AlbumListViewModel();
+  final _albumViewModel = AlbumListViewModel();
 
   AlbumsListScreen({this.func});
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<dynamic>(
-      future: viewModel.fetchAlbums(),
+      future: _albumViewModel.fetchAlbums(),
       builder: (ctx, snapshot) =>
           snapshot.connectionState == ConnectionState.waiting
               ? Center(
@@ -32,8 +32,9 @@ class AlbumsListScreen extends StatelessWidget {
                       itemBuilder: (item, idx) {
                         return AlbumTile(
                           onTileTap: () {
-                            if (snapshot.data[idx].id % 2 == 0) {
-                              if (func != null) func!(snapshot.data[idx]);
+                            if (_albumViewModel.showDetails(snapshot.data[idx]) &&
+                                func != null) {
+                              func!(snapshot.data[idx]);
                             } else {
                               Fluttertoast.showToast(
                                 msg: 'Album unavailable!',

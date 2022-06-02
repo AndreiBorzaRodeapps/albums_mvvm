@@ -1,0 +1,17 @@
+ {
+     "helloWorld": "Salut lume!",
+     "albumWithId": "Albumul cu id-ul:",
+     "myAlbums": "Albumele Mele",
+     "browse": "CAUTA",
+     "friends": "PRIETENI",
+     "news": "NOUTATI",
+     "profile": "PROFIL",
+     "back": "Inapoi",
+     "details": "Detalii",
+     "saveToFavorites": "Salveaza la favorite",
+     "photos": "Poze",
+     "addAComment": "Adauga un comentariu",
+     "photoWithId": "Poza cu id-ul:"
+
+ }
+

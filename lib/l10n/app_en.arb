@@ -1,0 +1,15 @@
+{
+    "helloWorld": "Hello World!",
+    "albumWithId": "Album with id:",
+    "myAlbums": "My Albums",
+    "browse": "BROWSE",
+    "friends": "FRIENDS",
+    "news": "NEWS",
+    "profile": "PROFILE",
+    "back": "Back",
+    "details": "Details",
+    "saveToFavorites": "Save to favorites",
+    "photos": "Photos",
+    "addAComment": "Add a comment",
+    "photoWithId": "Photo with id:"
+}

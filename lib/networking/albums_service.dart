@@ -1,4 +1,3 @@
-// import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
 import '../models/album_model.dart';
@@ -11,11 +10,5 @@ abstract class AlbumService {
 
   @GET("/albums")
   Future<List<AlbumModel>> getAlbums();
-
-
-  /*
-  @GET("/albums")
-  Future<List<Photo>> getPhotosForAlbum(@Query("albumId") int albumId);
-
-  */
+  
 }
