@@ -53,8 +53,9 @@ class AlbumTile extends StatelessWidget {
               ),
               Expanded(
                 child: ListTile(
-                  subtitle: Text(AppLocalizations.of(context)!.albumWithId +
-                      ' ${currentAlbum.id}'),
+                  subtitle: Text(
+                    AppLocalizations.of(context)!.albumWithId(currentAlbum.id),
+                  ),
                   onTap: null,
                   // in caz ca se poate merge la details doar de pe sageata
                   title: Text(

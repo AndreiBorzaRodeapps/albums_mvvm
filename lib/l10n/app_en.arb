@@ -1,6 +1,13 @@
 {
     "helloWorld": "Hello World!",
-    "albumWithId": "Album with id:",
+    "albumWithId": "Album with id: {id}",
+    "@albumWithId": {
+        "placeholders": {
+            "id": {
+                "type": "int"
+            }
+        }
+    },
     "myAlbums": "My Albums",
     "browse": "BROWSE",
     "friends": "FRIENDS",

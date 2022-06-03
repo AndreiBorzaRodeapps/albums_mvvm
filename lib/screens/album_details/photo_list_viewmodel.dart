@@ -13,7 +13,7 @@ class PhotoListViewModel {
     _photos = await _photoRepo.fetchPhotosForAlbumId(id);
 
     print('[DEBUG] Fetched id: $id');
-    
+
     return _photos;
   }
 }

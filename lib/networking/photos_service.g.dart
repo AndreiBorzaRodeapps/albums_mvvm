@@ -26,7 +26,7 @@ class _PhotoService implements PhotoService {
     final _result = await _dio.fetch<List<dynamic>>(
         _setStreamType<List<PhotoModel>>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/photos?albumId=54',
+                .compose(_dio.options, '/photos',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     var value = _result.data!

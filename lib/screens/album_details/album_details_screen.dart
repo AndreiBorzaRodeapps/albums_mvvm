@@ -42,47 +42,50 @@ class AlbumDetailsScreen extends StatelessWidget {
             right: AppDimensions.defaultPadding),
         child: FutureBuilder<dynamic>(
           future: _photoViewModel.fetchPhotosForAlbumId(album.id),
-          builder: (ctx, snapshot) =>
-              snapshot.connectionState == ConnectionState.waiting
-                  ? Center(child: CircularProgressIndicator())
-                  : Column(
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          radius: AppDimensions.avatarRadius,
-                          child: Text(
-                            album.getFirstCharacter(upperCase: true),
-                            style: Theme.of(context).textTheme.headline3,
+          builder: (ctx, snapshot) {
+            print('Connection state: ${snapshot.connectionState}');
+            print('Snapshot data: ${snapshot.data}');
+            return snapshot.connectionState == ConnectionState.waiting
+                ? Center(child: CircularProgressIndicator())
+                : Column(
+                    children: <Widget>[
+                      CircleAvatar(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        radius: AppDimensions.avatarRadius,
+                        child: Text(
+                          album.getFirstCharacter(upperCase: true),
+                          style: Theme.of(context).textTheme.headline3,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: AppDimensions.defaultPadding),
+                        child: Center(
+                          child: Column(
+                            children: <Widget>[
+                              Text(
+                                overflow: TextOverflow.ellipsis,
+                                album.title,
+                                style: Theme.of(context).textTheme.headline5,
+                              ),
+                              SizedBox(
+                                height: AppDimensions.xsPadding,
+                              ),
+                              Text(
+                                AppLocalizations.of(context)!
+                                    .albumWithId(album.id),
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ],
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              vertical: AppDimensions.defaultPadding),
-                          child: Center(
-                            child: Column(
-                              children: <Widget>[
-                                Text(
-                                  overflow: TextOverflow.ellipsis,
-                                  album.title,
-                                  style: Theme.of(context).textTheme.headline5,
-                                ),
-                                SizedBox(
-                                  height: AppDimensions.xsPadding,
-                                ),
-                                Text(
-                                  AppLocalizations.of(context)!.albumWithId +
-                                      ' ${album.id}',
-                                  style: Theme.of(context).textTheme.bodyText1,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        AlbumDetailsHorizontalBar(
-                            totalPhotos: snapshot.data.length),
-                        AlbumPhotosList(photos: snapshot.data),
-                      ],
-                    ),
+                      ),
+                      AlbumDetailsHorizontalBar(
+                          photosTotalNumber: snapshot.data.length),
+                      AlbumPhotosList(photos: snapshot.data),
+                    ],
+                  );
+          },
         ),
       ),
     );

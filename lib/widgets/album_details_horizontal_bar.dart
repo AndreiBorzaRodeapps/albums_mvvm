@@ -9,9 +9,9 @@ import '../theming/app_dimensions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlbumDetailsHorizontalBar extends StatelessWidget {
-  final int totalPhotos;
+  final int photosTotalNumber;
 
-  AlbumDetailsHorizontalBar({required this.totalPhotos});
+  AlbumDetailsHorizontalBar({required this.photosTotalNumber});
 
   @override
   Widget build(BuildContext context) {
@@ -21,42 +21,49 @@ class AlbumDetailsHorizontalBar extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           UniversalAppDivider(),
-          Container(
-            height: AppDimensions.defaultImageHeight,
+          IntrinsicHeight(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                IconTextButton(
-                  icon: Icons.favorite_border_outlined,
-                  text: AppLocalizations.of(context)!.saveToFavorites,
-                ),
-                UniversalAppDivider(vertical: true),
-                Container(
-                  margin: const EdgeInsets.symmetric(
-                      horizontal: AppDimensions.xsPadding),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        totalPhotos.toString(),
-                        style: TextStyle(
-                          fontSize: AppDimensions.defaultFontSize,
-                          fontWeight: FontWeight.bold,
-                          color: Theme.of(context).primaryColor,
-                        ),
-                      ),
-                      SizedBox(height: AppDimensions.xsPadding),
-                      Text(
-                        AppLocalizations.of(context)!.photos,
-                        style: Theme.of(context).textTheme.bodyText1,
-                      ),
-                    ],
+                Expanded(
+                  child: IconTextButton(
+                    onTap: () {},
+                    icon: Icons.favorite_border_outlined,
+                    text: AppLocalizations.of(context)!.saveToFavorites,
                   ),
                 ),
                 UniversalAppDivider(vertical: true),
-                IconTextButton(
-                  icon: Icons.comment,
-                  text: AppLocalizations.of(context)!.addAComment,
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: AppDimensions.xsPadding),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          photosTotalNumber.toString(),
+                          style: TextStyle(
+                            fontSize: AppDimensions.defaultFontSize,
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                        SizedBox(height: AppDimensions.xsPadding),
+                        Text(
+                          AppLocalizations.of(context)!.photos,
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                UniversalAppDivider(vertical: true),
+                Expanded(
+                  child: IconTextButton(
+                    onTap: () {},
+                    icon: Icons.comment,
+                    text: AppLocalizations.of(context)!.addAComment,
+                  ),
                 ),
               ],
             ),
@@ -66,10 +73,9 @@ class AlbumDetailsHorizontalBar extends StatelessWidget {
           SizedBox(height: AppDimensions.defaultPadding),
           Text(
             AppLocalizations.of(context)!.photos,
-            style: Theme.of(context)
-                .textTheme
-                .bodyText1
-                ?.copyWith(fontWeight: FontWeight.bold, fontSize: 12),
+            style: Theme.of(context).textTheme.bodyText1?.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: AppDimensions.smallFontSize),
           ),
         ],
       ),

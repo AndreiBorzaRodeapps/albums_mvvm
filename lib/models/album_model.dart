@@ -8,7 +8,11 @@ class AlbumModel {
   final int id;
   final String title;
 
-  AlbumModel({required this.id, required this.userId, required this.title});
+  AlbumModel({
+    required this.id,
+    required this.userId,
+    required this.title,
+  });
 
   factory AlbumModel.fromJson(Map<String, dynamic> json) =>
       _$AlbumModelFromJson(json);

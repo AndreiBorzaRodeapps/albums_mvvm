@@ -24,6 +24,7 @@ class AppDimensions {
 
   static const double selectedLabelFontSize = 14.0;
   static const double defaultFontSize = 25.0;
+  static const double smallFontSize = 12.0;
 
   static const int defaultSplashScreenDuration = 2000;
   static const int defaultSplashScreenImageSize = 300;

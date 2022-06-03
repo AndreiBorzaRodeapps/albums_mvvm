@@ -16,6 +16,7 @@ class AlbumPhotosList extends StatelessWidget {
           itemCount: photos.length,
           itemBuilder: (ctx, idx) {
             return Column(
+              key: ValueKey(photos[idx].id),
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(

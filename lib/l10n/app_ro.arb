@@ -1,16 +1,23 @@
  {
      "helloWorld": "Salut lume!",
-     "albumWithId": "Albumul cu id-ul:",
+     "albumWithId": "Albumul cu id-ul: {id}",
+         "@albumWithId": {
+             "placeholders": {
+                 "id": {
+                     "type": "int"
+                 }
+             }
+         },
      "myAlbums": "Albumele Mele",
-     "browse": "CAUTA",
+     "browse": "CAUTĂ",
      "friends": "PRIETENI",
-     "news": "NOUTATI",
+     "news": "NOUTĂȚI",
      "profile": "PROFIL",
-     "back": "Inapoi",
+     "back": "Înapoi",
      "details": "Detalii",
-     "saveToFavorites": "Salveaza la favorite",
+     "saveToFavorites": "Salvează la favorite",
      "photos": "Poze",
-     "addAComment": "Adauga un comentariu",
+     "addAComment": "Adaugă un comentariu",
      "photoWithId": "Poza cu id-ul:"
 
  }

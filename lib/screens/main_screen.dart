@@ -15,13 +15,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class MainScreen extends StatefulWidget {
   static const routeName = '/main-screen';
 
+  const MainScreen({Key? key}) : super(key: key);
+
   @override
   State<MainScreen> createState() => _MainScreenState();
 }
 
 class _MainScreenState extends State<MainScreen> {
   bool hasInternet = false;
-  var _currentAlbum;
+  late AlbumModel? _currentAlbum;
 
   void checkInternet() {
     InternetConnectionChecker().onStatusChange.listen((status) {
@@ -52,24 +54,26 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  final List<Tab> _tabsList = [
-    Tab(
-      icon: Icon(Icons.search),
-      text: 'BROWSE',
-    ),
-    Tab(
-      icon: Icon(Icons.emoji_emotions_outlined),
-      text: 'FRIENDS',
-    ),
-    Tab(
-      icon: Icon(Icons.file_copy_outlined),
-      text: 'NEWS',
-    ),
-    Tab(
-      icon: Icon(Icons.account_circle_outlined),
-      text: 'PROFILE',
-    )
-  ];
+  List<Tab> get _tabsList {
+    return [
+      Tab(
+        icon: const Icon(Icons.search),
+        text: AppLocalizations.of(context)!.browse,
+      ),
+      Tab(
+        icon: const Icon(Icons.emoji_emotions_outlined),
+        text: AppLocalizations.of(context)!.friends,
+      ),
+      Tab(
+        icon: const Icon(Icons.file_copy_outlined),
+        text: AppLocalizations.of(context)!.news,
+      ),
+      Tab(
+        icon: const Icon(Icons.account_circle_outlined),
+        text: AppLocalizations.of(context)!.profile,
+      )
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +94,7 @@ class _MainScreenState extends State<MainScreen> {
                       ? AlbumsListScreen(func: _changeAlbum)
                       : AlbumDetailsScreen(
                           changeCurrentAlbum: _changeAlbum,
-                          album: _currentAlbum,
+                          album: _currentAlbum!,
                         ),
                   FriendsScreen(),
                   NewsScreen(),
