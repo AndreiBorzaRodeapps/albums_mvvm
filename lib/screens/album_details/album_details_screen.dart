@@ -82,7 +82,7 @@ class AlbumDetailsScreen extends StatelessWidget {
                       ),
                       AlbumDetailsHorizontalBar(
                           photosTotalNumber: snapshot.data.length),
-                      AlbumPhotosList(photos: snapshot.data),
+                      Flexible(child: AlbumPhotosList(photos: snapshot.data)),
                     ],
                   );
           },

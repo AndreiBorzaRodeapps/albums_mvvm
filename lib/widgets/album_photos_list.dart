@@ -11,22 +11,20 @@ class AlbumPhotosList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Flexible(
-      child: ListView.builder(
-          itemCount: photos.length,
-          itemBuilder: (ctx, idx) {
-            return Column(
-              key: ValueKey(photos[idx].id),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      vertical: AppDimensions.smallPadding),
-                  child: PhotoTile(photos[idx]),
-                ),
-                UniversalAppDivider(),
-              ],
-            );
-          }),
-    );
+    return ListView.builder(
+        itemCount: photos.length,
+        itemBuilder: (ctx, idx) {
+          return Column(
+            key: ValueKey(photos[idx].id),
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: AppDimensions.smallPadding),
+                child: PhotoTile(photos[idx]),
+              ),
+              UniversalAppDivider(),
+            ],
+          );
+        });
   }
 }

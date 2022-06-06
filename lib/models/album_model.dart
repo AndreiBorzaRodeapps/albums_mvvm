@@ -20,8 +20,11 @@ class AlbumModel {
   Map<String, dynamic> toJson() => _$AlbumModelToJson(this);
 
   String getFirstCharacter({bool upperCase = false}) {
-    return upperCase == true
-        ? this.title[0].toUpperCase()
-        : this.title[0].toLowerCase();
+    if (title.isNotEmpty) {
+      return upperCase == true
+          ? this.title[0].toUpperCase()
+          : this.title[0].toLowerCase();
+    }
+    return '';
   }
 }
