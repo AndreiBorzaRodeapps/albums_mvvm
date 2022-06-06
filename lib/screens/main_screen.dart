@@ -77,48 +77,65 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return hasInternet
-        ? DefaultTabController(
-            initialIndex: 0,
-            animationDuration: const Duration(milliseconds: 100),
-            length: _tabsList.length,
-            child: Scaffold(
-              appBar: _currentAlbum != null
-                  ? null
-                  : AppBar(
-                      title: Text(AppLocalizations.of(context)!.myAlbums),
-                    ),
-              body: TabBarView(
-                children: <Widget>[
-                  _currentAlbum == null
-                      ? AlbumsListScreen(func: _changeAlbum)
-                      : AlbumDetailsScreen(
-                          changeCurrentAlbum: _changeAlbum,
-                          album: _currentAlbum!,
+    return DefaultTabController(
+      initialIndex: 0,
+      animationDuration: const Duration(milliseconds: 100),
+      length: _tabsList.length,
+      child: Scaffold(
+        appBar: _currentAlbum != null
+            ? null
+            : AppBar(
+                title: Text(AppLocalizations.of(context)!.myAlbums),
+                actions: hasInternet
+                    ? null
+                    : [
+                        Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                color: AppTheming.errorColor,
+                              ),
+                            ],
+                          ),
                         ),
-                  FriendsScreen(),
-                  NewsScreen(),
-                  ProfileScreen(),
-                ],
+                      ],
               ),
-              bottomNavigationBar: Container(
-                height: AppDimensions.defaultNavigationBarHeight,
-                color: Theme.of(context).primaryColor,
-                child: TabBar(
-                  padding: const EdgeInsets.only(top: AppDimensions.xxsPadding),
-                  labelColor: AppTheming.selectedNavigationLabelColor,
-                  unselectedLabelColor: Theme.of(context).backgroundColor,
-                  unselectedLabelStyle: Theme.of(context).textTheme.headline1,
-                  labelStyle: const TextStyle(
-                    fontSize: AppDimensions.selectedLabelFontSize,
+        body: TabBarView(
+          children: <Widget>[
+            _currentAlbum == null
+                ? AlbumsListScreen(
+                    func: _changeAlbum,
+                    isOffline: !hasInternet,
+                  )
+                : AlbumDetailsScreen(
+                    changeCurrentAlbum: _changeAlbum,
+                    album: _currentAlbum!,
                   ),
-                  indicatorColor: Theme.of(context).primaryColor,
-                  onTap: (value) {},
-                  tabs: _tabsList,
-                ),
-              ),
+            FriendsScreen(),
+            NewsScreen(),
+            ProfileScreen(),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          height: AppDimensions.defaultNavigationBarHeight,
+          color: Theme.of(context).primaryColor,
+          child: TabBar(
+            padding: const EdgeInsets.only(top: AppDimensions.xxsPadding),
+            labelColor: AppTheming.selectedNavigationLabelColor,
+            unselectedLabelColor: Theme.of(context).backgroundColor,
+            unselectedLabelStyle: Theme.of(context).textTheme.headline1,
+            labelStyle: const TextStyle(
+              fontSize: AppDimensions.selectedLabelFontSize,
             ),
-          )
-        : NoInternetScreen();
+            indicatorColor: Theme.of(context).primaryColor,
+            onTap: (value) {},
+            tabs: _tabsList,
+          ),
+        ),
+      ),
+    );
   }
 }

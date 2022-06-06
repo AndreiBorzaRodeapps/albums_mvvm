@@ -18,5 +18,7 @@
     "saveToFavorites": "Save to favorites",
     "photos": "Photos",
     "addAComment": "Add a comment",
-    "photoWithId": "Photo with id:"
+    "photoWithId": "Photo with id:",
+    "fetchedOfflineAlbums": "Fetched offline albums",
+    "noInternetConnection": "No internet connection!"
 }
