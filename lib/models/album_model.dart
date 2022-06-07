@@ -27,4 +27,16 @@ class AlbumModel {
     }
     return '';
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is AlbumModel &&
+        other.id == id &&
+        other.userId == userId &&
+        other.title == title;
+  }
+
+  @override
+  int get hashCode => id + userId;
+
 }

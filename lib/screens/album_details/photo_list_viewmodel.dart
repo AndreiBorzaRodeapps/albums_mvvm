@@ -11,8 +11,6 @@ class PhotoListViewModel {
   Future<List<PhotoModel>> fetchPhotosForAlbumId(int id) async {
     _photos = await _photoRepo.fetchPhotosForAlbumId(id);
 
-    print('[DEBUG] Fetched id: $id');
-
     return _photos;
   }
 }
