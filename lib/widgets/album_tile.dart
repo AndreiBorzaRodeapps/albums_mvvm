@@ -1,27 +1,33 @@
+import 'package:albums_mvvm/theming/app_dimensions.dart';
 import 'package:flutter/material.dart';
 import '../models/album_model.dart';
 import '../screens/album_details/album_details_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlbumTile extends StatelessWidget {
-  // const AlbumTile({
-  //   Key? key,
-  // }) : super(key: key);
-  final AlbumModel? currentAlbum;
-  final IconData? icon;
-  final VoidCallback? onTileTap;
+  final AlbumModel currentAlbum;
+  final IconData icon;
+  final VoidCallback onTileTap;
 
-  AlbumTile({this.currentAlbum, this.icon, this.onTileTap});
+  AlbumTile({
+    required this.currentAlbum,
+    required this.icon,
+    required this.onTileTap,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 3),
-      height: 100,
+      margin: const EdgeInsets.symmetric(vertical: AppDimensions.xxsPadding),
+      height: AppDimensions.defaultTileHeight,
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 7.5, horizontal: 20),
+        padding: const EdgeInsets.symmetric(
+            vertical: AppDimensions.smallPadding,
+            horizontal: AppDimensions.defaultPadding),
         child: Container(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius:
+                BorderRadius.circular(AppDimensions.defaultBorderRadius),
             border: Border.all(
               color: Colors.black12,
             ),
@@ -29,7 +35,8 @@ class AlbumTile extends StatelessWidget {
           child: Row(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: AppDimensions.smallPadding),
                 child: Stack(
                   alignment: Alignment.center,
                   children: <Widget>[
@@ -38,7 +45,7 @@ class AlbumTile extends StatelessWidget {
                     ),
                     Icon(
                       icon,
-                      size: 25,
+                      size: AppDimensions.defaultIconSize,
                       color: Theme.of(context).primaryColor,
                     ),
                   ],
@@ -46,12 +53,14 @@ class AlbumTile extends StatelessWidget {
               ),
               Expanded(
                 child: ListTile(
-                  subtitle: Text('Album with id: ${currentAlbum?.id}'),
+                  subtitle: Text(
+                    AppLocalizations.of(context)!.albumWithId(currentAlbum.id),
+                  ),
                   onTap: null,
                   // in caz ca se poate merge la details doar de pe sageata
                   title: Text(
                     overflow: TextOverflow.ellipsis,
-                    currentAlbum?.title as String,
+                    currentAlbum.title as String,
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 ),
@@ -60,7 +69,7 @@ class AlbumTile extends StatelessWidget {
                 onPressed: onTileTap,
                 icon: Icon(
                   Icons.chevron_right,
-                  size: 25,
+                  size: AppDimensions.defaultIconSize,
                 ),
                 color: Theme.of(context).primaryColor,
               ),

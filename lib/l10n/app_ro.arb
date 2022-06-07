@@ -1,0 +1,24 @@
+ {
+     "helloWorld": "Salut lume!",
+     "albumWithId": "Albumul cu id-ul: {id}",
+         "@albumWithId": {
+             "placeholders": {
+                 "id": {
+                     "type": "int"
+                 }
+             }
+         },
+     "myAlbums": "Albumele Mele",
+     "browse": "CAUTĂ",
+     "friends": "PRIETENI",
+     "news": "NOUTĂȚI",
+     "profile": "PROFIL",
+     "back": "Înapoi",
+     "details": "Detalii",
+     "saveToFavorites": "Salvează la favorite",
+     "photos": "Poze",
+     "addAComment": "Adaugă un comentariu",
+     "photoWithId": "Poza cu id-ul:"
+
+ }
+

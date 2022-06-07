@@ -7,9 +7,9 @@ part of 'album_model.dart';
 // **************************************************************************
 
 AlbumModel _$AlbumModelFromJson(Map<String, dynamic> json) => AlbumModel(
-      id: json['id'] as int?,
-      userId: json['userId'] as int?,
-      title: json['title'] as String?,
+      id: json['id'] as int,
+      userId: json['userId'] as int,
+      title: json['title'] as String,
     );
 
 Map<String, dynamic> _$AlbumModelToJson(AlbumModel instance) =>

@@ -6,23 +6,23 @@ import '../../networking/albums_service.dart';
 
 class AlbumListViewModel {
   final AlbumRepository _albumRepo;
+  List<AlbumModel> _albums = [];
 
   AlbumListViewModel({AlbumRepository? albumRepository})
       : _albumRepo = albumRepository ?? AlbumRepository.http();
 
   Future<List<AlbumModel>> fetchAlbums() async {
-    final albums = await _albumRepo.fetchAlbums();
+    _albums = await _albumRepo.fetchAlbums();
 
-    albums.sort(
+    _albums.sort(
       (a, b) {
-        return a.title!.toLowerCase().compareTo(b.title!.toLowerCase());
+        return a.title.toLowerCase().compareTo(b.title.toLowerCase());
       },
     );
+    return _albums;
+  }
 
-    albums.forEach((element) {
-      print('Title for id ${element.id}: ${element.title}');
-    });
-
-    return albums;
+  bool showDetails(AlbumModel album) {
+    return album.id % 2 == 0 ? true : false;
   }
 }
