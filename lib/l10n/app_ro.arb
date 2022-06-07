@@ -18,7 +18,9 @@
      "saveToFavorites": "Salvează la favorite",
      "photos": "Poze",
      "addAComment": "Adaugă un comentariu",
-     "photoWithId": "Poza cu id-ul:"
+     "photoWithId": "Poza cu id-ul:",
+     "fetchedOfflineAlbums": "Albume locale",
+     "noInternetConnection": "Nicio conexiune la internet!"
 
  }
 
