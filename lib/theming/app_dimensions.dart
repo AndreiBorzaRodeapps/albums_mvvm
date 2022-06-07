@@ -28,4 +28,6 @@ class AppDimensions {
 
   static const int defaultSplashScreenDuration = 2000;
   static const int defaultSplashScreenImageSize = 300;
+
+  static const defaultSecondsWaitTime = 2;
 }

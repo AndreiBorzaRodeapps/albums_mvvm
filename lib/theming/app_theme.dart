@@ -65,6 +65,8 @@ class AppTheming {
   static const Color selectedNavigationLabelColor = Color(0xFFBDBDBD);
   static const Color unselectedNavigationLabelColor = Colors.white;
 
+  static const defaultSnackBarBackground = Colors.black87;
+
   static ThemeData appThemeData = ThemeData(
     textTheme: ThemeData().textTheme.copyWith(
           headline4: AppTheming.headline4,
