@@ -43,10 +43,8 @@ class AlbumDetailsScreen extends StatelessWidget {
         child: FutureBuilder<dynamic>(
           future: _photoViewModel.fetchPhotosForAlbumId(album.id),
           builder: (ctx, snapshot) {
-            print('Connection state: ${snapshot.connectionState}');
-            print('Snapshot data: ${snapshot.data}');
             return snapshot.connectionState == ConnectionState.waiting
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : Column(
                     children: <Widget>[
                       CircleAvatar(
@@ -68,7 +66,7 @@ class AlbumDetailsScreen extends StatelessWidget {
                                 album.title,
                                 style: Theme.of(context).textTheme.headline5,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: AppDimensions.xsPadding,
                               ),
                               Text(
