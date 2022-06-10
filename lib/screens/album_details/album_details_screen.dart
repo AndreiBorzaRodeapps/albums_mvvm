@@ -44,7 +44,7 @@ class AlbumDetailsScreen extends StatelessWidget {
           future: _photoViewModel.fetchPhotosForAlbumId(album.id),
           builder: (ctx, snapshot) {
             return snapshot.connectionState == ConnectionState.waiting
-                ? Center(child: CircularProgressIndicator())
+                ? const Center(child: CircularProgressIndicator())
                 : Column(
                     children: <Widget>[
                       CircleAvatar(
@@ -66,7 +66,7 @@ class AlbumDetailsScreen extends StatelessWidget {
                                 album.title,
                                 style: Theme.of(context).textTheme.headline5,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 height: AppDimensions.xsPadding,
                               ),
                               Text(

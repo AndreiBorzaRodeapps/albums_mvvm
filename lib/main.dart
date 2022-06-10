@@ -26,8 +26,8 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: [
-        Locale('en', ''), // English, no country code
-        Locale('ro', ''), // Romanian, no country code
+        Locale('en', ''),
+        Locale('ro', ''),
       ],
       debugShowCheckedModeBanner: false,
       title: AppTheming.title,

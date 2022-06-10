@@ -4,6 +4,7 @@ import 'package:albums_mvvm/repository/album_repository.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'album_repo_test.mocks.dart';
 
@@ -12,6 +13,8 @@ void main() {
   test('albums repo', () async {
     final mockAlbumService = MockAlbumService();
     final albumRepo = AlbumRepository(mockAlbumService);
+
+    SharedPreferences.setMockInitialValues({'albums': 'albums'});
 
     final List<AlbumModel> expectedAlbums = [
       AlbumModel(id: 1, userId: 1, title: 'mock1'),
