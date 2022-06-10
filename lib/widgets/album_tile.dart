@@ -18,6 +18,7 @@ class AlbumTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      key: Key('tile-${currentAlbum.id}'),
       margin: const EdgeInsets.symmetric(vertical: AppDimensions.xxsPadding),
       height: AppDimensions.defaultTileHeight,
       child: Padding(
@@ -66,6 +67,7 @@ class AlbumTile extends StatelessWidget {
                 ),
               ),
               IconButton(
+                key: Key('details-${currentAlbum.id}'),
                 onPressed: onTileTap,
                 icon: Icon(
                   Icons.chevron_right,
