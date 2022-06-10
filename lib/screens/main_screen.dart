@@ -5,6 +5,7 @@ import 'package:albums_mvvm/theming/app_dimensions.dart';
 import 'package:albums_mvvm/theming/app_theme.dart';
 import 'package:flutter/material.dart';
 import '../models/album_model.dart';
+import '../models/user_model.dart';
 import 'friends/friends_screen.dart';
 import 'news/news_screen.dart';
 import 'profile/profile_screen.dart';
@@ -24,6 +25,8 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   bool hasInternet = false;
   late AlbumModel? _currentAlbum;
+  int currentSelectedTab = 0;
+  late UserModel _currentUser;
 
   void checkInternet() {
     InternetConnectionChecker().onStatusChange.listen((status) {
@@ -37,6 +40,15 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     checkInternet();
     _changeAlbum(null);
+    final userAddr = UserAddress(
+        streetAddress: 'none', city: 'none', country: 'none', zipCode: 'none');
+    _currentUser = UserModel(
+      firstName: '',
+      lastName: 'Unknown',
+      emailAddress: '',
+      phoneNumber: '',
+      userAddress: userAddr,
+    );
   }
 
   @override
@@ -52,6 +64,12 @@ class _MainScreenState extends State<MainScreen> {
         _currentAlbum = album;
       },
     );
+  }
+
+  void _changeSelectedTab(int newValue) {
+    setState(() {
+      currentSelectedTab = newValue;
+    });
   }
 
   List<Tab> get _tabsList {
@@ -82,7 +100,7 @@ class _MainScreenState extends State<MainScreen> {
       animationDuration: const Duration(milliseconds: 100),
       length: _tabsList.length,
       child: Scaffold(
-        appBar: _currentAlbum != null
+        appBar: _currentAlbum != null || currentSelectedTab == 3
             ? null
             : AppBar(
                 title: Text(AppLocalizations.of(context)!.myAlbums),
@@ -116,7 +134,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
             FriendsScreen(),
             NewsScreen(),
-            ProfileScreen(),
+            ProfileScreen(currentUser: _currentUser),
           ],
         ),
         bottomNavigationBar: Container(
@@ -131,7 +149,9 @@ class _MainScreenState extends State<MainScreen> {
               fontSize: AppDimensions.selectedLabelFontSize,
             ),
             indicatorColor: Theme.of(context).primaryColor,
-            onTap: (value) {},
+            onTap: (value) {
+              _changeSelectedTab(value);
+            },
             tabs: _tabsList,
           ),
         ),

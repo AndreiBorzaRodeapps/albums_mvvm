@@ -38,7 +38,6 @@ class MyApp extends StatelessWidget {
         MySplashScreen.routeName: (_) => MySplashScreen(),
         AlbumsListScreen.routeName: (_) => AlbumsListScreen(),
         FriendsScreen.routeName: (_) => FriendsScreen(),
-        ProfileScreen.routeName: (_) => ProfileScreen(),
         NoInternetScreen.routeName: (_) => NoInternetScreen(),
         NewsScreen.routeName: (_) => NewsScreen(),
       },

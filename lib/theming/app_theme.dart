@@ -56,6 +56,12 @@ class AppTheming {
     fontSize: 15,
   );
 
+  static const userProfileHeadline = TextStyle(
+    color: _indigo900,
+    fontSize: 25,
+    fontWeight: FontWeight.bold,
+  );
+
   static const fontFamily = 'Nunito';
   static const title = 'Albums App';
 

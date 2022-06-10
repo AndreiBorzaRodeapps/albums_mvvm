@@ -83,7 +83,9 @@ class AlbumsListScreen extends StatelessWidget {
                               }
                             },
                             icon: Icons.list_alt_sharp,
-                            currentAlbum: snapshot.data[idx],
+                            title: snapshot.data[idx].title,
+                            subTitle: AppLocalizations.of(context)!
+                                .albumWithId(snapshot.data[idx].id),
                           );
                         }),
                   ),
