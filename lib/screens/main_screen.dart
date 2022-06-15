@@ -1,6 +1,7 @@
 import 'package:albums_mvvm/screens/album_details/album_details_screen.dart';
 import 'package:albums_mvvm/screens/album_list/albums_list_screen.dart';
 import 'package:albums_mvvm/screens/no_internet/no_internet_screen.dart';
+import 'package:albums_mvvm/screens/profile/create_user_viewmodel.dart';
 import 'package:albums_mvvm/theming/app_dimensions.dart';
 import 'package:albums_mvvm/theming/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +27,6 @@ class _MainScreenState extends State<MainScreen> {
   bool hasInternet = false;
   late AlbumModel? _currentAlbum;
   int currentSelectedTab = 0;
-  late UserModel _currentUser;
 
   void checkInternet() {
     InternetConnectionChecker().onStatusChange.listen((status) {
@@ -40,15 +40,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     checkInternet();
     _changeAlbum(null);
-    final userAddr = UserAddress(
-        streetAddress: 'none', city: 'none', country: 'none', zipCode: 'none');
-    _currentUser = UserModel(
-      firstName: '',
-      lastName: 'Unknown',
-      emailAddress: '',
-      phoneNumber: '',
-      userAddress: userAddr,
-    );
+    // _currentUser = userViewModel.currentUser;
   }
 
   @override
@@ -111,7 +103,7 @@ class _MainScreenState extends State<MainScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Icon(
                                 Icons.error_outline,
                                 color: AppTheming.errorColor,
@@ -134,7 +126,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
             FriendsScreen(),
             NewsScreen(),
-            ProfileScreen(currentUser: _currentUser),
+            ProfileScreen(),
           ],
         ),
         bottomNavigationBar: Container(

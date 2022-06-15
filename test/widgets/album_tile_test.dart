@@ -10,7 +10,8 @@ import 'package:albums_mvvm/theming/app_theme.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
-  testWidgets('Album tile test, should render a text and an icon', (tester) async {
+  testWidgets('Album tile test, should render a text and an icon',
+      (tester) async {
     final mockAlbumModel = AlbumModel(id: 1, userId: 23, title: 'mockTitle');
     const IconData mockIcon = Icons.add;
 
@@ -35,7 +36,8 @@ void main() {
               height: 700,
               width: double.infinity,
               child: AlbumTile(
-                  currentAlbum: mockAlbumModel,
+                  title: mockAlbumModel.title,
+                  subTitle: 'Album with id: ${mockAlbumModel.id}',
                   onTileTap: () {},
                   icon: mockIcon),
             ),
@@ -48,7 +50,6 @@ void main() {
     final widgetFinder = find.byType(AlbumTile);
     final foundTextTitleWidget =
         tester.firstWidget(find.textContaining(mockAlbumModel.title)) as Text;
-
 
     expect(foundTextTitleWidget.style!.fontFamily, AppTheming.fontFamily);
     expect(foundTextTitleWidget.style!.color, AppTheming.primaryColor);

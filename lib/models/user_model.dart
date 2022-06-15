@@ -2,13 +2,13 @@ class UserAddress {
   final String streetAddress;
   final String city;
   final String country;
-  final String zipCode;
+  final String zipcode;
 
   UserAddress({
     required this.streetAddress,
     required this.city,
     required this.country,
-    required this.zipCode,
+    required this.zipcode,
   });
 }
 
@@ -27,10 +27,29 @@ class UserModel {
     required this.userAddress,
   });
 
+  factory UserModel.unknown() => UserModel(
+        firstName: 'none',
+        lastName: 'Unknown',
+        emailAddress: 'none',
+        phoneNumber: 'none',
+        userAddress: UserAddress(
+          streetAddress: 'none',
+          city: 'none',
+          country: 'none',
+          zipcode: 'none',
+        ),
+      );
+
   String get firstCharacter {
     if (lastName != 'Unknown') {
       return firstName[0].toUpperCase();
     }
     return '?';
   }
+
+  bool get isUnknown {
+    return lastName == 'Unknown';
+  }
+
+
 }

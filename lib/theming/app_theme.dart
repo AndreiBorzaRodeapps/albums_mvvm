@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
 class AppTheming {
   static const Color _indigo900 = Color(0xFF1A237E);
   static const Color _indigo200 = Color(0xFF9FA8DA);
   static const Color _indigo600 = Color(0xFF3949AB);
-  static const Color _grey600 = Color(0XFFF757575);
+  static const Color _indigo100 = Color(0xFFE8EAF6);
+  static const Color _grey600 = Color(0xFFF757575);
+  static const Color _formColor = Color(0xFF3F5AA6);
 
   static const primarySwatch = Colors.indigo;
   static const primaryColor = _indigo600;
@@ -12,6 +16,7 @@ class AppTheming {
   static const backgroundColor = Colors.white;
   static const errorColor = Colors.redAccent;
   static const bottomAppBarColor = _indigo600;
+  static const secondaryBackgroundColor = _indigo100;
 
   static const appBarTheme = AppBarTheme(
     color: Colors.white,
@@ -60,6 +65,41 @@ class AppTheming {
     color: _indigo900,
     fontSize: 25,
     fontWeight: FontWeight.bold,
+    fontFamily: fontFamily,
+  );
+
+  static const applyButtonTheme = TextStyle(
+    color: _indigo600,
+    fontSize: 13,
+    fontFamily: fontFamily,
+    fontWeight: FontWeight.bold,
+  );
+
+  static const formDecorationStyle = TextStyle(
+    color: _indigo600,
+    fontWeight: FontWeight.bold,
+    fontSize: 13,
+    fontFamily: fontFamily,
+  );
+
+  static const formErrorStyle = TextStyle(
+    color: errorColor,
+    fontWeight: FontWeight.bold,
+    fontSize: 13,
+    fontFamily: fontFamily,
+  );
+
+  static const formTextStyle = TextStyle(
+    color: _formColor,
+    fontSize: 15,
+    fontFamily: fontFamily,
+    fontWeight: FontWeight.w500,
+  );
+
+  static const formErrorTextStyle = TextStyle(
+    color: errorColor,
+    fontSize: 15,
+    fontFamily: fontFamily,
   );
 
   static const fontFamily = 'Nunito';
@@ -73,6 +113,13 @@ class AppTheming {
 
   static const defaultSnackBarBackground = Colors.black87;
 
+  static const buttonTextTheme = TextStyle(
+    color: backgroundColor,
+    fontSize: 13,
+    fontFamily: fontFamily,
+    fontWeight: FontWeight.bold,
+  );
+
   static ThemeData appThemeData = ThemeData(
     textTheme: ThemeData().textTheme.copyWith(
           headline4: AppTheming.headline4,
@@ -83,6 +130,7 @@ class AppTheming {
           headline5: AppTheming.headline5,
           bodyText1: AppTheming.bodytext1,
         ),
+    buttonColor: primaryColor,
     fontFamily: AppTheming.fontFamily,
     primarySwatch: AppTheming.primarySwatch,
     accentColor: AppTheming.accentColor,
