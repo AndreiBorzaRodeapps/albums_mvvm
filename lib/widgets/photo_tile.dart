@@ -32,7 +32,7 @@ class PhotoTile extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(width: AppDimensions.defaultPadding),
+          const SizedBox(width: AppDimensions.defaultPadding),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

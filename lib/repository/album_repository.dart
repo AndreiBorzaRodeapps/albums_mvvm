@@ -29,11 +29,11 @@ class AlbumRepository {
       //retrieve locals
       final List<String>? stringList = prefs.getStringList('albums');
       if (stringList != null) {
-        stringList.forEach((element) {
+        for (var element in stringList) {
           final data = json.decode(element);
           _albums.add(AlbumModel(
               id: data['id'], title: data['title'], userId: data['userId']));
-        });
+        }
       }
     }
 
