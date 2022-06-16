@@ -9,6 +9,7 @@ class AppTheming {
   static const Color _indigo100 = Color(0xFFE8EAF6);
   static const Color _grey600 = Color(0xFFF757575);
   static const Color _formColor = Color(0xFF3F5AA6);
+  static const Color _purpleColor = Color(0xFF6D28D9);
 
   static const primarySwatch = Colors.indigo;
   static const primaryColor = _indigo600;
@@ -102,6 +103,8 @@ class AppTheming {
     fontFamily: fontFamily,
   );
 
+  static const linearGradientsColors = [_indigo600, _purpleColor];
+
   static const fontFamily = 'Nunito';
   static const title = 'Albums App';
 
@@ -112,6 +115,22 @@ class AppTheming {
   static const Color unselectedNavigationLabelColor = Colors.white;
 
   static const defaultSnackBarBackground = Colors.black87;
+
+  static const selectedLabelStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontFamily: fontFamily,
+    height: .1,
+    fontSize: 15,
+    color: selectedNavigationLabelColor,
+  );
+
+  static const unselectedLabelStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontFamily: fontFamily,
+    height: .1,
+    fontSize: 11,
+    color: unselectedNavigationLabelColor,
+  );
 
   static const buttonTextTheme = TextStyle(
     color: backgroundColor,

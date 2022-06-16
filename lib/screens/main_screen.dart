@@ -1,12 +1,11 @@
 import 'package:albums_mvvm/screens/album_details/album_details_screen.dart';
 import 'package:albums_mvvm/screens/album_list/albums_list_screen.dart';
 import 'package:albums_mvvm/screens/no_internet/no_internet_screen.dart';
-import 'package:albums_mvvm/screens/profile/create_user_viewmodel.dart';
 import 'package:albums_mvvm/theming/app_dimensions.dart';
 import 'package:albums_mvvm/theming/app_theme.dart';
 import 'package:flutter/material.dart';
 import '../models/album_model.dart';
-import '../models/user_model.dart';
+import '../widgets/app_nav_bar.dart';
 import 'friends/friends_screen.dart';
 import 'news/news_screen.dart';
 import 'profile/profile_screen.dart';
@@ -16,8 +15,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MainScreen extends StatefulWidget {
   static const routeName = '/main-screen';
-
-  const MainScreen({Key? key}) : super(key: key);
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -40,7 +37,6 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     checkInternet();
     _changeAlbum(null);
-    // _currentUser = userViewModel.currentUser;
   }
 
   @override
@@ -58,39 +54,49 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  void _changeSelectedTab(int newValue) {
+  void changeCurrentScreen(int newVal) {
     setState(() {
-      currentSelectedTab = newValue;
+      currentSelectedTab = newVal;
     });
   }
 
-  List<Tab> get _tabsList {
-    return [
-      Tab(
-        icon: const Icon(Icons.search),
-        text: AppLocalizations.of(context)!.browse,
-      ),
-      Tab(
-        icon: const Icon(Icons.emoji_emotions_outlined),
-        text: AppLocalizations.of(context)!.friends,
-      ),
-      Tab(
-        icon: const Icon(Icons.file_copy_outlined),
-        text: AppLocalizations.of(context)!.news,
-      ),
-      Tab(
-        icon: const Icon(Icons.account_circle_outlined),
-        text: AppLocalizations.of(context)!.profile,
-      )
-    ];
+  Widget sendScreen(int index) {
+    Widget retScreen = AlbumsListScreen();
+    switch (index) {
+      case 0:
+        retScreen = _currentAlbum == null
+            ? AlbumsListScreen(
+                func: _changeAlbum,
+                isOffline: !hasInternet,
+              )
+            : AlbumDetailsScreen(
+                changeCurrentAlbum: _changeAlbum,
+                album: _currentAlbum!,
+              );
+        return retScreen;
+      case 1:
+        retScreen = FriendsScreen();
+        return retScreen;
+
+      case 2:
+        retScreen = NewsScreen();
+        return retScreen;
+
+      case 3:
+        retScreen = ProfileScreen();
+        return retScreen;
+
+      default:
+        return retScreen;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      initialIndex: 0,
-      animationDuration: const Duration(milliseconds: 100),
-      length: _tabsList.length,
+    return SafeArea(
+      bottom: true,
+      top: false,
+      maintainBottomViewPadding: true,
       child: Scaffold(
         appBar: _currentAlbum != null || currentSelectedTab == 3
             ? null
@@ -113,40 +119,9 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                       ],
               ),
-        body: TabBarView(
-          children: <Widget>[
-            _currentAlbum == null
-                ? AlbumsListScreen(
-                    func: _changeAlbum,
-                    isOffline: !hasInternet,
-                  )
-                : AlbumDetailsScreen(
-                    changeCurrentAlbum: _changeAlbum,
-                    album: _currentAlbum!,
-                  ),
-            FriendsScreen(),
-            NewsScreen(),
-            ProfileScreen(),
-          ],
-        ),
-        bottomNavigationBar: Container(
-          height: AppDimensions.defaultNavigationBarHeight,
-          color: Theme.of(context).primaryColor,
-          child: TabBar(
-            padding: const EdgeInsets.only(top: AppDimensions.xxsPadding),
-            labelColor: AppTheming.selectedNavigationLabelColor,
-            unselectedLabelColor: Theme.of(context).backgroundColor,
-            unselectedLabelStyle: Theme.of(context).textTheme.headline1,
-            labelStyle: const TextStyle(
-              fontSize: AppDimensions.selectedLabelFontSize,
-            ),
-            indicatorColor: Theme.of(context).primaryColor,
-            onTap: (value) {
-              _changeSelectedTab(value);
-            },
-            tabs: _tabsList,
-          ),
-        ),
+        body: sendScreen(currentSelectedTab),
+        bottomNavigationBar:
+            BottomNavBar(changeTabFn: changeCurrentScreen, totalTabs: 4),
       ),
     );
   }

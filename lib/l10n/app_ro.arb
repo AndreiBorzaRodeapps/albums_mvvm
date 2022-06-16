@@ -20,7 +20,24 @@
      "addAComment": "Adaugă un comentariu",
      "photoWithId": "Poza cu id-ul:",
      "fetchedOfflineAlbums": "Albume locale",
-     "noInternetConnection": "Nicio conexiune la internet!"
-
+     "noInternetConnection": "Nicio conexiune la internet!",
+     "requiredField": "Obligatoriu",
+     "firstNameField": "PRENUME",
+     "lastNameField": "NUME",
+     "emailAddressField": "ADRESĂ DE EMAIL",
+     "phoneNumberField": "TELEFON",
+     "streetAddressField": "ADRESA STRĂZII",
+     "cityField": "ORAȘ",
+     "countryField": "ȚARĂ",
+     "zipcodeField": "COD POȘTAL",
+     "useMyLocation": "Folosește locația mea",
+     "deleteUser": "Șterge utilizator",
+     "apply": "Aplică",
+     "yourProfile": "Profilul tău",
+     "memberSince": "Membru din",
+     "contactInfo": "Date Contact",
+     "unknown": "Utilizator",
+     "notAMember": "Nu este membru",
+     "emailAddress": "Adresa de email"
  }
 

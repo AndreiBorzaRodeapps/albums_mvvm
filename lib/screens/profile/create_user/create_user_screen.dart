@@ -1,15 +1,17 @@
-import 'package:albums_mvvm/screens/profile/create_user_viewmodel.dart';
+import 'dart:async';
+
 import 'package:albums_mvvm/theming/app_dimensions.dart';
 import 'package:albums_mvvm/theming/app_theme.dart';
 import 'package:albums_mvvm/widgets/app_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import '../../models/user_model.dart';
+import '../../../models/user_model.dart';
+import 'create_user_viewmodel.dart';
 
 class CreateUserScreen extends StatefulWidget {
-  final UserModel currentUser;
+  final UserModel? currentUser;
 
   CreateUserScreen({required this.currentUser});
 
@@ -21,7 +23,6 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   final _form = GlobalKey<FormState>();
   final userViewModel = CreateUserViewModel();
   bool canApply = false;
-  final String emptyFormText = 'Required';
   bool _isLoading = false;
 
   final firstNameController = TextEditingController();
@@ -53,24 +54,24 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   }
 
   void setControllerToEmptyError(TextEditingController controller) {
-    controller.text = emptyFormText;
+    controller.text = AppLocalizations.of(context)!.requiredField;
   }
 
   void setInitialUser() {
-    if (!widget.currentUser.isUnknown) {
-      firstNameController.text = widget.currentUser.firstName;
-      lastNameController.text = widget.currentUser.lastName;
-      emailAddressController.text = widget.currentUser.emailAddress;
-      phoneNumberController.text = widget.currentUser.phoneNumber;
+    if (widget.currentUser != null) {
+      firstNameController.text = widget.currentUser!.firstName;
+      lastNameController.text = widget.currentUser!.lastName;
+      emailAddressController.text = widget.currentUser!.emailAddress;
+      phoneNumberController.text = widget.currentUser!.phoneNumber;
       streetAddressController.text =
-          widget.currentUser.userAddress.streetAddress;
-      cityController.text = widget.currentUser.userAddress.city;
-      countryController.text = widget.currentUser.userAddress.country;
-      zipcodeController.text = widget.currentUser.userAddress.zipcode;
+          widget.currentUser!.userAddress.streetAddress;
+      cityController.text = widget.currentUser!.userAddress.city;
+      countryController.text = widget.currentUser!.userAddress.country;
+      zipcodeController.text = widget.currentUser!.userAddress.zipcode;
     }
   }
 
-  Future<void> validateForm() async {
+  void validateForm() {
     setState(() {
       _isLoading = true;
       isEmpty = userViewModel.checkControllersAndUpdateUI(
@@ -86,28 +87,29 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
     });
 
     if (userViewModel.canSubmit) {
-      await userViewModel.setLocalUser(
-        UserModel(
-          firstName: firstNameController.text.trim(),
-          lastName: lastNameController.text.trim(),
-          emailAddress: emailAddressController.text.trim(),
-          phoneNumber: phoneNumberController.text.trim(),
-          userAddress: UserAddress(
-            city: cityController.text.trim(),
-            country: countryController.text.trim(),
-            streetAddress: streetAddressController.text.trim(),
-            zipcode: zipcodeController.text.trim(),
-          ),
+      final UserModel user = UserModel(
+        firstName: firstNameController.text.trim(),
+        lastName: lastNameController.text.trim(),
+        emailAddress: emailAddressController.text.trim(),
+        phoneNumber: phoneNumberController.text.trim(),
+        userAddress: UserAddress(
+          city: cityController.text.trim(),
+          country: countryController.text.trim(),
+          streetAddress: streetAddressController.text.trim(),
+          zipcode: zipcodeController.text.trim(),
         ),
       );
 
       setState(() {
         _isLoading = false;
       });
-      if (mounted) {
-        Navigator.of(context).pop();
-      }
+      Navigator.of(context).pop(user);
+
+      ///
     } else {
+      setState(() {
+        _isLoading = false;
+      });
       if (isEmpty['firstName'] == true) {
         setControllerToEmptyError(firstNameController);
       }
@@ -142,7 +144,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(widget.currentUser);
           },
           child: Center(
             child: Text(
@@ -153,7 +155,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
         ),
         title: Center(
           child: Text(
-            'Contact Info',
+            AppLocalizations.of(context)!.contactInfo,
             textAlign: TextAlign.center,
           ),
         ),
@@ -161,13 +163,13 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
           FlatButton(
               onPressed: validateForm,
               child: Text(
-                'Apply',
+                AppLocalizations.of(context)!.apply,
                 style: AppTheming.applyButtonTheme,
               ))
         ],
       ),
       body: _isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Container(
               height: MediaQuery.of(context).size.height,
               width: double.infinity,
@@ -183,24 +185,35 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                           children: [
                             Flexible(
                                 child: AppTextFormField(
+                              validator: (value) {
+                                bool res = true;
+                                if (value != null) {
+                                  res = userViewModel.validateName(value);
+                                }
+
+                                return res == true ? null : 'Incorrect name';
+                              },
                               onSumbit: () {},
                               keyboardType: TextInputType.text,
                               controller: firstNameController,
-                              labelText: 'FIRST NAME',
+                              labelText:
+                                  AppLocalizations.of(context)!.firstNameField,
                               errorText: isEmpty['firstName'] == false
                                   ? null
-                                  : emptyFormText,
+                                  : AppLocalizations.of(context)!.requiredField,
                             )),
-                            SizedBox(width: AppDimensions.xxlPadding),
+                            const SizedBox(width: AppDimensions.xxlPadding),
                             Flexible(
                               child: AppTextFormField(
                                 onSumbit: () {},
                                 controller: lastNameController,
                                 keyboardType: TextInputType.name,
-                                labelText: 'LAST NAME',
+                                labelText:
+                                    AppLocalizations.of(context)!.lastNameField,
                                 errorText: isEmpty['lastName'] == false
                                     ? null
-                                    : emptyFormText,
+                                    : AppLocalizations.of(context)!
+                                        .requiredField,
                               ),
                             ),
                           ],
@@ -212,10 +225,11 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                             onSumbit: () {},
                             keyboardType: TextInputType.emailAddress,
                             controller: emailAddressController,
-                            labelText: 'EMAIL ADDRESS',
+                            labelText:
+                                AppLocalizations.of(context)!.emailAddressField,
                             errorText: isEmpty['emailAddress'] == false
                                 ? null
-                                : emptyFormText,
+                                : AppLocalizations.of(context)!.requiredField,
                           ),
                         ),
                         Padding(
@@ -225,21 +239,23 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                           child: AppTextFormField(
                             onSumbit: () {},
                             keyboardType: TextInputType.phone,
-                            labelText: 'PHONE NUMBER',
+                            labelText:
+                                AppLocalizations.of(context)!.phoneNumberField,
                             controller: phoneNumberController,
                             errorText: isEmpty['phoneNumber'] == false
                                 ? null
-                                : emptyFormText,
+                                : AppLocalizations.of(context)!.requiredField,
                           ),
                         ),
                         AppTextFormField(
                           onSumbit: () {},
                           controller: streetAddressController,
-                          labelText: 'STREET ADDRESS',
+                          labelText:
+                              AppLocalizations.of(context)!.streetAddressField,
                           keyboardType: TextInputType.text,
                           errorText: isEmpty['streetAddress'] == false
                               ? null
-                              : emptyFormText,
+                              : AppLocalizations.of(context)!.requiredField,
                         ),
                         Row(
                           children: [
@@ -248,10 +264,12 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                                 onSumbit: () {},
                                 keyboardType: TextInputType.name,
                                 controller: cityController,
-                                labelText: 'CITY',
+                                labelText:
+                                    AppLocalizations.of(context)!.cityField,
                                 errorText: isEmpty['city'] == false
                                     ? null
-                                    : emptyFormText,
+                                    : AppLocalizations.of(context)!
+                                        .requiredField,
                               ),
                             ),
                             SizedBox(width: AppDimensions.xxlPadding),
@@ -259,11 +277,13 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                               child: AppTextFormField(
                                 onSumbit: () {},
                                 keyboardType: TextInputType.name,
-                                labelText: 'COUNTRY',
+                                labelText:
+                                    AppLocalizations.of(context)!.countryField,
                                 controller: countryController,
                                 errorText: isEmpty['country'] == false
                                     ? null
-                                    : emptyFormText,
+                                    : AppLocalizations.of(context)!
+                                        .requiredField,
                               ),
                             ),
                           ],
@@ -273,48 +293,50 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                             Flexible(
                               child: AppTextFormField(
                                 onSumbit: () {},
-                                labelText: 'ZIPCODE',
+                                labelText:
+                                    AppLocalizations.of(context)!.zipcodeField,
                                 controller: zipcodeController,
                                 keyboardType: TextInputType.number,
                                 errorText: isEmpty['zipcode'] == false
                                     ? null
-                                    : emptyFormText,
+                                    : AppLocalizations.of(context)!
+                                        .requiredField,
                               ),
                             ),
                             SizedBox(width: 200),
                           ],
                         ),
-                        SizedBox(height: AppDimensions.xxxlPadding),
+                        const SizedBox(height: AppDimensions.xxxlPadding),
                         RaisedButton(
                           onPressed: () {},
                           elevation: 0,
                           color: Theme.of(context).primaryColor,
-                          child: Text(
-                            'Use my location',
-                            style: AppTheming.buttonTextTheme,
-                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                               AppDimensions.bigBorderRadius,
                             ),
                           ),
+                          child: Text(
+                            AppLocalizations.of(context)!.useMyLocation,
+                            style: AppTheming.buttonTextTheme,
+                          ),
                         ),
-                        SizedBox(height: AppDimensions.defaultPadding),
+                        const SizedBox(height: AppDimensions.defaultPadding),
                         RaisedButton(
                           onPressed: () async {
-                            await userViewModel.deleteUser();
-                            Navigator.of(context).pop();
+                            userViewModel.deleteUser();
+                            Navigator.of(context).pop(null);
                           },
                           elevation: 0,
                           color: Theme.of(context).errorColor,
-                          child: Text(
-                            'Delete user',
-                            style: AppTheming.buttonTextTheme,
-                          ),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                               AppDimensions.bigBorderRadius,
                             ),
+                          ),
+                          child: Text(
+                            AppLocalizations.of(context)!.deleteUser,
+                            style: AppTheming.buttonTextTheme,
                           ),
                         )
                       ],

@@ -8,17 +8,21 @@ class AppTextFormField extends StatelessWidget {
   final String? errorText;
   final TextInputType? keyboardType;
   final Function onSumbit;
+  final String? Function(String?)? validator;
 
-  AppTextFormField(
-      {required this.controller,
-      required this.labelText,
-      required this.onSumbit,
-      this.errorText,
-      this.keyboardType});
+  AppTextFormField({
+    required this.controller,
+    required this.labelText,
+    required this.onSumbit,
+    this.errorText,
+    this.keyboardType,
+    this.validator,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      validator: validator,
       onFieldSubmitted: (value) {
         onSumbit(value);
       },

@@ -1,3 +1,7 @@
+import 'dart:convert';
+
+import 'package:albums_mvvm/models/album_model.dart';
+
 class UserAddress {
   final String streetAddress;
   final String city;
@@ -10,6 +14,29 @@ class UserAddress {
     required this.country,
     required this.zipcode,
   });
+
+  static const jsonStreetAddres = 'streetAddress';
+  static const jsonCity = 'city';
+  static const jsonCountry = 'countryString';
+  static const jsonZipcode = 'zipcode';
+
+  String toJson() => json.encode({
+        jsonStreetAddres: streetAddress,
+        jsonCity: city,
+        jsonCountry: country,
+        jsonZipcode: zipcode,
+      });
+
+  factory UserAddress.fromJson(String jason) {
+    final addressJson = json.decode(jason);
+
+    return UserAddress(
+      streetAddress: addressJson[jsonStreetAddres] as String,
+      city: addressJson[jsonCity] as String,
+      country: addressJson[jsonCountry] as String,
+      zipcode: addressJson[jsonZipcode] as String,
+    );
+  }
 }
 
 class UserModel {
@@ -27,29 +54,34 @@ class UserModel {
     required this.userAddress,
   });
 
-  factory UserModel.unknown() => UserModel(
-        firstName: 'none',
-        lastName: 'Unknown',
-        emailAddress: 'none',
-        phoneNumber: 'none',
-        userAddress: UserAddress(
-          streetAddress: 'none',
-          city: 'none',
-          country: 'none',
-          zipcode: 'none',
-        ),
-      );
+  static const jsonFirstName = 'firstName';
+  static const jsonLastName = 'lastName';
+  static const jsonEmailAddress = 'emailAddress';
+  static const jsonPhoneNumber = 'phoneNumber';
+  static const jsonUserAddress = 'userAddress';
+
+  String toJson() => json.encode({
+        jsonFirstName: firstName,
+        jsonLastName: lastName,
+        jsonEmailAddress: emailAddress,
+        jsonPhoneNumber: phoneNumber,
+        jsonUserAddress: userAddress.toJson(),
+      });
+
+  factory UserModel.fromJson(String jason) {
+    final userJson = json.decode(jason);
+
+    return UserModel(
+      firstName: userJson[jsonFirstName] as String,
+      lastName: userJson[jsonLastName] as String,
+      emailAddress: userJson[jsonEmailAddress] as String,
+      phoneNumber: userJson[jsonPhoneNumber] as String,
+      userAddress: UserAddress.fromJson(userJson['userAddress']),
+    );
+  }
 
   String get firstCharacter {
-    if (lastName != 'Unknown') {
-      return firstName[0].toUpperCase();
-    }
+    if (firstName != null) return firstName[0].toUpperCase();
     return '?';
   }
-
-  bool get isUnknown {
-    return lastName == 'Unknown';
-  }
-
-
 }
