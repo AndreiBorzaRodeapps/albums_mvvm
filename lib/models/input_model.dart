@@ -1,7 +1,7 @@
 import 'package:rxdart/subjects.dart';
 
 class Input {
-  final Subject<bool> subject;
+  final BehaviorSubject<bool> subject;
 
   Input(this.subject);
 }

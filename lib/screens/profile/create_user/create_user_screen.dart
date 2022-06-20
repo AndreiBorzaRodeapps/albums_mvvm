@@ -18,7 +18,7 @@ class CreateUserScreen extends StatefulWidget {
 
 class _CreateUserScreenState extends State<CreateUserScreen> {
   final _form = GlobalKey<FormState>();
-  final userVM = CreateUserViewModel(Input(PublishSubject()));
+  final userVM = CreateUserViewModel(Input(BehaviorSubject()));
   bool canApply = false;
   bool _isLoading = false;
 
