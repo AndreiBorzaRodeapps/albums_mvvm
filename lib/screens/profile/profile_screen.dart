@@ -24,8 +24,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void initState() {
-    profileVM = ProfileViewModel(Input(PublishSubject()));
     super.initState();
+    profileVM = ProfileViewModel(Input(BehaviorSubject()));
+    profileVM.input.subject.add(true);
   }
 
   Widget _buildSProfileScreen(ProfileScreenState? profileState) {
