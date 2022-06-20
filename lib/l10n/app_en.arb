@@ -38,5 +38,9 @@
     "contactInfo": "Contact Info",
     "unknown": "Unknown",
     "notAMember": "Not a member",
-    "emailAddress": "Email address"
+    "emailAddress": "Email address",
+    "onlyLetter": "Only letters!",
+    "onlyDigits": "Only digits!",
+    "invalidEmail": "Invalid email!"
+
 }

@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:albums_mvvm/models/user_model.dart';
 import 'package:albums_mvvm/screens/profile/create_user/create_user_screen.dart';
 import 'package:albums_mvvm/screens/profile/profile_viewmodel.dart';
 import 'package:albums_mvvm/theming/app_theme.dart';
@@ -28,9 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     profileVM.input.loadUser.add(true);
   }
 
-  Widget _buildSProfileScreen(ProfileScreenState? profileState) {
-    profileState ??= ProfileScreenState(ProfileState.unknown);
-
+  Widget _buildSProfileScreen(ProfileScreenState profileState) {
     return Center(
       child: Column(
         children: <Widget>[
@@ -41,37 +36,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
               backgroundColor: Theme.of(context).primaryColor,
               radius: AppDimensions.avatarRadius,
               child: Text(
-                profileState.profileState == ProfileState.unknown
-                    ? '?'
-                    : profileState.sendUser!.firstCharacter,
+                profileState.displayAvatar,
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
           ),
           Text(
-            profileState.profileState != ProfileState.unknown
-                ? '${profileState.sendUser!.firstName} ${profileState.sendUser!.lastName}'
-                : AppLocalizations.of(context)!.unknown,
+            profileState.fullName(context),
             style: AppTheming.userProfileHeadline,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
                 vertical: AppDimensions.smallPadding),
             child: Text(
-              profileState.profileState == ProfileState.unknown
-                  ? AppLocalizations.of(context)!.notAMember
-                  : '${AppLocalizations.of(context)!.memberSince} ${DateTime.now().year}',
+              profileState.memberSince(context),
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
           AlbumTile(
             title: AppLocalizations.of(context)!.contactInfo,
-            subTitle: profileState.profileState == ProfileState.unknown
-                ? ' '
-                : '${AppLocalizations.of(context)!.emailAddress}: ${profileState.sendUser!.emailAddress}',
-            icon: profileState.profileState == ProfileState.unknown
-                ? Icons.account_circle
-                : Icons.list_alt_sharp,
+            subTitle: profileState.emailAddress(context),
+            icon: profileState.displayIcon,
             onTileTap: () {
               Navigator.of(context)
                   .push(
@@ -79,12 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   builder: (ctx) => CreateUserScreen(),
                 ),
               )
-                  .then((user) {
-                if (user != null) {
-                  print('Received from create/edit screen:  ${user.toJson()}');
-                } else {
-                  print('Received delete user');
-                }
+                  .then((_) {
                 profileVM.input.loadUser.add(true);
               });
             },
@@ -96,16 +76,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // it only updates after pressing the notifications button
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.yourProfile),
         actions: [
           IconButton(
-            onPressed: () {
-              profileVM.input.loadUser.add(true);
-              //pus de test
-            },
+            onPressed: () {},
             icon: const Icon(Icons.notifications),
           )
         ],
@@ -113,7 +89,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: StreamBuilder<ProfileScreenState>(
         stream: profileVM.output.outStream,
         builder: (ctx, AsyncSnapshot<ProfileScreenState> snapshot) {
-          return _buildSProfileScreen(snapshot.data);
+          return snapshot.connectionState == ConnectionState.waiting
+              ? const Center(child: CircularProgressIndicator())
+              : _buildSProfileScreen(snapshot.data!);
         },
       ),
     );

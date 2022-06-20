@@ -38,6 +38,9 @@
      "contactInfo": "Date Contact",
      "unknown": "Utilizator",
      "notAMember": "Nu este membru",
-     "emailAddress": "Adresa de email"
+     "emailAddress": "Adresa de email",
+     "onlyLetter": "Doar litere!",
+     "onlyDigits": "Doar cifre!",
+     "invalidEmail": "Adresă invalidă!"
  }
 

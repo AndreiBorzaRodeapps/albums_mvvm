@@ -7,6 +7,7 @@ class AppDimensions {
   static const double xxxsPadding = 1.0;
   static const double xxxlPadding = 75.0;
   static const double xxlPadding = 60.0;
+  static const double xlPadding = 35.0;
 
   static const double defaultMargin = 25.0;
   static const double smallMargin = 10.0;
