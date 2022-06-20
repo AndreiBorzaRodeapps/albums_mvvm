@@ -7,7 +7,6 @@ import 'package:albums_mvvm/theming/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 
-import '../../models/input_model.dart';
 import '../../theming/app_dimensions.dart';
 import '../../widgets/album_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -26,7 +25,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     profileVM = ProfileViewModel(Input(BehaviorSubject()));
-    profileVM.input.subject.add(true);
+    profileVM.input.loadUser.add(true);
   }
 
   Widget _buildSProfileScreen(ProfileScreenState? profileState) {
@@ -80,12 +79,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   builder: (ctx) => CreateUserScreen(),
                 ),
               )
-                  .then((user) async {
-                if (user != null)
+                  .then((user) {
+                if (user != null) {
                   print('Received from create/edit screen:  ${user.toJson()}');
-                else
+                } else {
                   print('Received delete user');
-                profileVM.input.subject.add(true);
+                }
+                profileVM.input.loadUser.add(true);
               });
             },
           )
@@ -103,14 +103,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           IconButton(
             onPressed: () {
-              profileVM.input.subject.add(true);
+              profileVM.input.loadUser.add(true);
+              //pus de test
             },
             icon: const Icon(Icons.notifications),
           )
         ],
       ),
       body: StreamBuilder<ProfileScreenState>(
-        stream: profileVM.output.stream,
+        stream: profileVM.output.outStream,
         builder: (ctx, AsyncSnapshot<ProfileScreenState> snapshot) {
           return _buildSProfileScreen(snapshot.data);
         },

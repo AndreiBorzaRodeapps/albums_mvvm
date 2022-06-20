@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:rxdart/subjects.dart';
-import '../../../models/input_model.dart';
 import '../../../models/user_model.dart';
 import 'create_user_viewmodel.dart';
 
@@ -52,8 +51,8 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
 
   @override
   void didChangeDependencies() {
-    userVM.input.subject.add(true);
     super.didChangeDependencies();
+    userVM.input.subject.add(true);
   }
 
   void setControllerToEmptyError(TextEditingController controller) {

@@ -3,14 +3,12 @@ import 'dart:async';
 import 'package:albums_mvvm/repository/user_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
-import '../../../models/input_model.dart';
-import '../../../models/output_model.dart';
 import '../../../models/user_model.dart';
 
 class CreateUserViewModel {
   final UserRepository _userRepo;
   final Input input;
-  late Output<UserModel?> output;
+  late Output output;
 
   bool _canSubmit = true;
   final RegExp _nameRegExp = RegExp('[a-zA-Z]');
@@ -19,7 +17,7 @@ class CreateUserViewModel {
 
   CreateUserViewModel(this.input, {UserRepository? userRepository})
       : _userRepo = userRepository ?? UserRepository() {
-    output = Output<UserModel?>(_getUserModel());
+    output = Output(_getUserModel());
   }
 
   Stream<UserModel?> _getUserModel() => input.subject
@@ -111,4 +109,16 @@ class CreateUserViewModel {
   bool get canSubmit {
     return _canSubmit;
   }
+}
+
+class Input {
+  final BehaviorSubject<bool> subject;
+
+  Input(this.subject);
+}
+
+class Output {
+  final Stream<UserModel?> stream;
+
+  Output(this.stream);
 }
