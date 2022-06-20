@@ -7,11 +7,10 @@ import 'package:albums_mvvm/theming/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/subjects.dart';
 
+import '../../models/input_model.dart';
 import '../../theming/app_dimensions.dart';
 import '../../widgets/album_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'create_user/create_user_viewmodel.dart';
 
 class ProfileScreen extends StatefulWidget {
   static const routeName = '/profile';
@@ -22,41 +21,16 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late ProfileViewModel profileVM;
-  ProfileScreenState? _profileState;
-  List<StreamSubscription> _subscriptions = [];
-
-  @override
-  void dispose() {
-    _subscriptions.forEach((element) {
-      element.cancel();
-    });
-    _subscriptions.clear();
-    super.dispose();
-  }
 
   @override
   void initState() {
     profileVM = ProfileViewModel(Input(PublishSubject()));
-    _subscriptions.add(
-      profileVM.output.stream.listen(
-        (profileScreenState) {
-          setState(() {
-            print('Received: $profileScreenState');
-            _profileState = profileScreenState;
-          });
-        },
-      ),
-    );
-    profileVM.input.loadUser.add(true);
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
+  Widget _buildSProfileScreen(ProfileScreenState? profileState) {
+    profileState ??= ProfileScreenState(ProfileState.unknown);
 
-  Widget _buildSProfileScreen({UserModel? user}) {
     return Center(
       child: Column(
         children: <Widget>[
@@ -67,14 +41,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               backgroundColor: Theme.of(context).primaryColor,
               radius: AppDimensions.avatarRadius,
               child: Text(
-                user == null ? '?' : user.firstCharacter,
+                profileState.profileState == ProfileState.unknown
+                    ? '?'
+                    : profileState.sendUser!.firstCharacter,
                 style: Theme.of(context).textTheme.headline3,
               ),
             ),
           ),
           Text(
-            user != null
-                ? '${user.firstName} ${user.lastName}'
+            profileState.profileState != ProfileState.unknown
+                ? '${profileState.sendUser!.firstName} ${profileState.sendUser!.lastName}'
                 : AppLocalizations.of(context)!.unknown,
             style: AppTheming.userProfileHeadline,
           ),
@@ -82,7 +58,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             padding: const EdgeInsets.symmetric(
                 vertical: AppDimensions.smallPadding),
             child: Text(
-              user == null
+              profileState.profileState == ProfileState.unknown
                   ? AppLocalizations.of(context)!.notAMember
                   : '${AppLocalizations.of(context)!.memberSince} ${DateTime.now().year}',
               style: Theme.of(context).textTheme.bodyText1,
@@ -90,17 +66,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
           AlbumTile(
             title: AppLocalizations.of(context)!.contactInfo,
-            subTitle: user == null
+            subTitle: profileState.profileState == ProfileState.unknown
                 ? ' '
-                : '${AppLocalizations.of(context)!.emailAddress}: ${user.emailAddress}',
-            icon: user == null ? Icons.account_circle : Icons.list_alt_sharp,
+                : '${AppLocalizations.of(context)!.emailAddress}: ${profileState.sendUser!.emailAddress}',
+            icon: profileState.profileState == ProfileState.unknown
+                ? Icons.account_circle
+                : Icons.list_alt_sharp,
             onTileTap: () {
               Navigator.of(context)
                   .push(
                 MaterialPageRoute(
-                  builder: (ctx) => CreateUserScreen(
-                    currentUser: user,
-                  ),
+                  builder: (ctx) => CreateUserScreen(),
                 ),
               )
                   .then((user) async {
@@ -108,8 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   print('Received from create/edit screen:  ${user.toJson()}');
                 else
                   print('Received delete user');
-
-                profileVM.updateUser(user);
+                profileVM.input.subject.add(true);
               });
             },
           )
@@ -120,23 +95,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // it only updates after pressing the notifications button
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.yourProfile),
         actions: [
           IconButton(
             onPressed: () {
-              profileVM.input.loadUser.add(true);
+              profileVM.input.subject.add(true);
             },
             icon: const Icon(Icons.notifications),
           )
         ],
       ),
-      body: _profileState == null
-          ? const Center(child: CircularProgressIndicator())
-          : (_profileState!.profileState == ProfileState.unknown
-              ? _buildSProfileScreen()
-              : _buildSProfileScreen(user: _profileState!.sendUser)),
+      body: StreamBuilder<ProfileScreenState>(
+        stream: profileVM.output.stream,
+        builder: (ctx, AsyncSnapshot<ProfileScreenState> snapshot) {
+          return _buildSProfileScreen(snapshot.data);
+        },
+      ),
     );
   }
 }

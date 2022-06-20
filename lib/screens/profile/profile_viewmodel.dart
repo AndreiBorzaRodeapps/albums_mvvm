@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:albums_mvvm/repository/user_repository.dart';
 import 'package:flutter/foundation.dart';
 
+import '../../models/input_model.dart';
+import '../../models/output_model.dart';
 import '../../models/user_model.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -17,35 +19,18 @@ class ProfileScreenState {
 class ProfileViewModel {
   final UserRepository _userRepo;
   final Input input;
-  late Output output;
+  late Output<ProfileScreenState> output;
 
   ProfileViewModel(this.input, {UserRepository? userRepository})
       : _userRepo = userRepository ?? UserRepository() {
-    output = Output(stream: _getProfileScreenState());
+    output = Output<ProfileScreenState>(_getProfileScreenState());
   }
 
-  Stream<ProfileScreenState> _getProfileScreenState() => input.loadUser.flatMap(
+  Stream<ProfileScreenState> _getProfileScreenState() => input.subject.flatMap(
         (_) => _userRepo.fetchLocalUser().map(
               (user) => user == null
                   ? ProfileScreenState(ProfileState.unknown)
                   : ProfileScreenState(ProfileState.user, sendUser: user),
             ),
       );
-
-  void updateUser(UserModel? user) {
-    _userRepo.setLocalUser(user);
-    input.loadUser.add(true);
-  }
-}
-
-class Input {
-  final Subject<bool> loadUser;
-
-  Input(this.loadUser);
-}
-
-class Output {
-  final Stream<ProfileScreenState> stream;
-
-  Output({required this.stream});
 }

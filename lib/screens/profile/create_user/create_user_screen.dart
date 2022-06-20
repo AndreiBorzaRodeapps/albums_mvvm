@@ -4,24 +4,21 @@ import 'package:albums_mvvm/theming/app_dimensions.dart';
 import 'package:albums_mvvm/theming/app_theme.dart';
 import 'package:albums_mvvm/widgets/app_text_form_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:rxdart/subjects.dart';
+import '../../../models/input_model.dart';
 import '../../../models/user_model.dart';
 import 'create_user_viewmodel.dart';
 
 class CreateUserScreen extends StatefulWidget {
-  final UserModel? currentUser;
-
-  CreateUserScreen({required this.currentUser});
-
   @override
   State<CreateUserScreen> createState() => _CreateUserScreenState();
 }
 
 class _CreateUserScreenState extends State<CreateUserScreen> {
   final _form = GlobalKey<FormState>();
-  final userViewModel = CreateUserViewModel();
+  final userVM = CreateUserViewModel(Input(PublishSubject()));
   bool canApply = false;
   bool _isLoading = false;
 
@@ -50,31 +47,36 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   @override
   void initState() {
     super.initState();
-    setInitialUser();
+    userVM.input.subject.add(true);
+  }
+
+  @override
+  void didChangeDependencies() {
+    userVM.input.subject.add(true);
+    super.didChangeDependencies();
   }
 
   void setControllerToEmptyError(TextEditingController controller) {
     controller.text = AppLocalizations.of(context)!.requiredField;
   }
 
-  void setInitialUser() {
-    if (widget.currentUser != null) {
-      firstNameController.text = widget.currentUser!.firstName;
-      lastNameController.text = widget.currentUser!.lastName;
-      emailAddressController.text = widget.currentUser!.emailAddress;
-      phoneNumberController.text = widget.currentUser!.phoneNumber;
-      streetAddressController.text =
-          widget.currentUser!.userAddress.streetAddress;
-      cityController.text = widget.currentUser!.userAddress.city;
-      countryController.text = widget.currentUser!.userAddress.country;
-      zipcodeController.text = widget.currentUser!.userAddress.zipcode;
+  void setInitialUser(UserModel? currentUser) {
+    if (currentUser != null) {
+      firstNameController.text = currentUser.firstName;
+      lastNameController.text = currentUser.lastName;
+      emailAddressController.text = currentUser.emailAddress;
+      phoneNumberController.text = currentUser.phoneNumber;
+      streetAddressController.text = currentUser.userAddress.streetAddress;
+      cityController.text = currentUser.userAddress.city;
+      countryController.text = currentUser.userAddress.country;
+      zipcodeController.text = currentUser.userAddress.zipcode;
     }
   }
 
   void validateForm() {
     setState(() {
       _isLoading = true;
-      isEmpty = userViewModel.checkControllersAndUpdateUI(
+      isEmpty = userVM.checkControllersAndUpdateUI(
         firstName: firstNameController,
         lastName: lastNameController,
         emailAddress: emailAddressController,
@@ -86,7 +88,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
       );
     });
 
-    if (userViewModel.canSubmit) {
+    if (userVM.canSubmit) {
       final UserModel user = UserModel(
         firstName: firstNameController.text.trim(),
         lastName: lastNameController.text.trim(),
@@ -103,37 +105,38 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
       setState(() {
         _isLoading = false;
       });
-      Navigator.of(context).pop(user);
+      userVM.setLocalUser(user);
+      Navigator.of(context).pop();
 
       ///
     } else {
       setState(() {
         _isLoading = false;
+        if (isEmpty['firstName'] == true) {
+          setControllerToEmptyError(firstNameController);
+        }
+        if (isEmpty['lastName'] == true) {
+          setControllerToEmptyError(lastNameController);
+        }
+        if (isEmpty['emailAddress'] == true) {
+          setControllerToEmptyError(emailAddressController);
+        }
+        if (isEmpty['phoneNumber'] == true) {
+          setControllerToEmptyError(phoneNumberController);
+        }
+        if (isEmpty['streetAddress'] == true) {
+          setControllerToEmptyError(streetAddressController);
+        }
+        if (isEmpty['city'] == true) {
+          setControllerToEmptyError(cityController);
+        }
+        if (isEmpty['country'] == true) {
+          setControllerToEmptyError(countryController);
+        }
+        if (isEmpty['zipcode'] == true) {
+          setControllerToEmptyError(zipcodeController);
+        }
       });
-      if (isEmpty['firstName'] == true) {
-        setControllerToEmptyError(firstNameController);
-      }
-      if (isEmpty['lastName'] == true) {
-        setControllerToEmptyError(lastNameController);
-      }
-      if (isEmpty['emailAddress'] == true) {
-        setControllerToEmptyError(emailAddressController);
-      }
-      if (isEmpty['phoneNumber'] == true) {
-        setControllerToEmptyError(phoneNumberController);
-      }
-      if (isEmpty['streetAddress'] == true) {
-        setControllerToEmptyError(streetAddressController);
-      }
-      if (isEmpty['city'] == true) {
-        setControllerToEmptyError(cityController);
-      }
-      if (isEmpty['country'] == true) {
-        setControllerToEmptyError(countryController);
-      }
-      if (isEmpty['zipcode'] == true) {
-        setControllerToEmptyError(zipcodeController);
-      }
     }
   }
 
@@ -144,7 +147,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop(widget.currentUser);
+            Navigator.of(context).pop();
           },
           child: Center(
             child: Text(
@@ -170,181 +173,197 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Container(
-              height: MediaQuery.of(context).size.height,
-              width: double.infinity,
-              color: AppTheming.secondaryBackgroundColor,
-              child: Padding(
-                padding: const EdgeInsets.all(AppDimensions.defaultPadding),
-                child: Form(
-                  key: _form,
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: <Widget>[
-                        Row(
-                          children: [
-                            Flexible(
-                                child: AppTextFormField(
-                              validator: (value) {
-                                bool res = true;
-                                if (value != null) {
-                                  res = userViewModel.validateName(value);
-                                }
+          : StreamBuilder<UserModel?>(
+              stream: userVM.output.stream,
+              builder: (context, snapshot) {
+                setInitialUser(snapshot.data);
+                return Container(
+                  height: MediaQuery.of(context).size.height,
+                  width: double.infinity,
+                  color: AppTheming.secondaryBackgroundColor,
+                  child: Padding(
+                    padding: const EdgeInsets.all(AppDimensions.defaultPadding),
+                    child: Form(
+                      key: _form,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: <Widget>[
+                            Row(
+                              children: [
+                                Flexible(
+                                    child: AppTextFormField(
+                                  validator: (value) {
+                                    bool res = true;
+                                    if (value != null) {
+                                      res = userVM.validateName(value);
+                                    }
 
-                                return res == true ? null : 'Incorrect name';
-                              },
+                                    return res == true
+                                        ? null
+                                        : 'Incorrect name';
+                                  },
+                                  onSumbit: () {},
+                                  keyboardType: TextInputType.text,
+                                  controller: firstNameController,
+                                  labelText: AppLocalizations.of(context)!
+                                      .firstNameField,
+                                  errorText: isEmpty['firstName'] == false
+                                      ? null
+                                      : AppLocalizations.of(context)!
+                                          .requiredField,
+                                )),
+                                const SizedBox(width: AppDimensions.xxlPadding),
+                                Flexible(
+                                  child: AppTextFormField(
+                                    onSumbit: () {},
+                                    controller: lastNameController,
+                                    keyboardType: TextInputType.name,
+                                    labelText: AppLocalizations.of(context)!
+                                        .lastNameField,
+                                    errorText: isEmpty['lastName'] == false
+                                        ? null
+                                        : AppLocalizations.of(context)!
+                                            .requiredField,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: AppDimensions.smallPadding),
+                              child: AppTextFormField(
+                                onSumbit: () {},
+                                keyboardType: TextInputType.emailAddress,
+                                controller: emailAddressController,
+                                labelText: AppLocalizations.of(context)!
+                                    .emailAddressField,
+                                errorText: isEmpty['emailAddress'] == false
+                                    ? null
+                                    : AppLocalizations.of(context)!
+                                        .requiredField,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  top: AppDimensions.smallPadding,
+                                  bottom: AppDimensions.xxlPadding),
+                              child: AppTextFormField(
+                                onSumbit: () {},
+                                keyboardType: TextInputType.phone,
+                                labelText: AppLocalizations.of(context)!
+                                    .phoneNumberField,
+                                controller: phoneNumberController,
+                                errorText: isEmpty['phoneNumber'] == false
+                                    ? null
+                                    : AppLocalizations.of(context)!
+                                        .requiredField,
+                              ),
+                            ),
+                            AppTextFormField(
                               onSumbit: () {},
+                              controller: streetAddressController,
+                              labelText: AppLocalizations.of(context)!
+                                  .streetAddressField,
                               keyboardType: TextInputType.text,
-                              controller: firstNameController,
-                              labelText:
-                                  AppLocalizations.of(context)!.firstNameField,
-                              errorText: isEmpty['firstName'] == false
+                              errorText: isEmpty['streetAddress'] == false
                                   ? null
                                   : AppLocalizations.of(context)!.requiredField,
-                            )),
-                            const SizedBox(width: AppDimensions.xxlPadding),
-                            Flexible(
-                              child: AppTextFormField(
-                                onSumbit: () {},
-                                controller: lastNameController,
-                                keyboardType: TextInputType.name,
-                                labelText:
-                                    AppLocalizations.of(context)!.lastNameField,
-                                errorText: isEmpty['lastName'] == false
-                                    ? null
-                                    : AppLocalizations.of(context)!
-                                        .requiredField,
+                            ),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: AppTextFormField(
+                                    onSumbit: () {},
+                                    keyboardType: TextInputType.name,
+                                    controller: cityController,
+                                    labelText:
+                                        AppLocalizations.of(context)!.cityField,
+                                    errorText: isEmpty['city'] == false
+                                        ? null
+                                        : AppLocalizations.of(context)!
+                                            .requiredField,
+                                  ),
+                                ),
+                                SizedBox(width: AppDimensions.xxlPadding),
+                                Flexible(
+                                  child: AppTextFormField(
+                                    onSumbit: () {},
+                                    keyboardType: TextInputType.name,
+                                    labelText: AppLocalizations.of(context)!
+                                        .countryField,
+                                    controller: countryController,
+                                    errorText: isEmpty['country'] == false
+                                        ? null
+                                        : AppLocalizations.of(context)!
+                                            .requiredField,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: AppTextFormField(
+                                    onSumbit: validateForm,
+                                    labelText: AppLocalizations.of(context)!
+                                        .zipcodeField,
+                                    controller: zipcodeController,
+                                    keyboardType: TextInputType.number,
+                                    errorText: isEmpty['zipcode'] == false
+                                        ? null
+                                        : AppLocalizations.of(context)!
+                                            .requiredField,
+                                  ),
+                                ),
+                                SizedBox(width: 200),
+                              ],
+                            ),
+                            const SizedBox(height: AppDimensions.xxxlPadding),
+                            RaisedButton(
+                              onPressed: () {},
+                              elevation: 0,
+                              color: Theme.of(context).primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppDimensions.bigBorderRadius,
+                                ),
                               ),
+                              child: Text(
+                                AppLocalizations.of(context)!.useMyLocation,
+                                style: AppTheming.buttonTextTheme,
+                              ),
+                            ),
+                            const SizedBox(
+                                height: AppDimensions.defaultPadding),
+                            RaisedButton(
+                              onPressed: () async {
+                                userVM.deleteUser();
+                                Navigator.of(context).pop();
+                              },
+                              elevation: 0,
+                              color: Theme.of(context).errorColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(
+                                  AppDimensions.bigBorderRadius,
+                                ),
+                              ),
+                              child: Text(
+                                AppLocalizations.of(context)!.deleteUser,
+                                style: AppTheming.buttonTextTheme,
+                              ),
+                            ),
+                            RaisedButton(
+                              onPressed: () {
+                                userVM.input.subject.add(true);
+                              },
                             ),
                           ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: AppDimensions.smallPadding),
-                          child: AppTextFormField(
-                            onSumbit: () {},
-                            keyboardType: TextInputType.emailAddress,
-                            controller: emailAddressController,
-                            labelText:
-                                AppLocalizations.of(context)!.emailAddressField,
-                            errorText: isEmpty['emailAddress'] == false
-                                ? null
-                                : AppLocalizations.of(context)!.requiredField,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              top: AppDimensions.smallPadding,
-                              bottom: AppDimensions.xxlPadding),
-                          child: AppTextFormField(
-                            onSumbit: () {},
-                            keyboardType: TextInputType.phone,
-                            labelText:
-                                AppLocalizations.of(context)!.phoneNumberField,
-                            controller: phoneNumberController,
-                            errorText: isEmpty['phoneNumber'] == false
-                                ? null
-                                : AppLocalizations.of(context)!.requiredField,
-                          ),
-                        ),
-                        AppTextFormField(
-                          onSumbit: () {},
-                          controller: streetAddressController,
-                          labelText:
-                              AppLocalizations.of(context)!.streetAddressField,
-                          keyboardType: TextInputType.text,
-                          errorText: isEmpty['streetAddress'] == false
-                              ? null
-                              : AppLocalizations.of(context)!.requiredField,
-                        ),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: AppTextFormField(
-                                onSumbit: () {},
-                                keyboardType: TextInputType.name,
-                                controller: cityController,
-                                labelText:
-                                    AppLocalizations.of(context)!.cityField,
-                                errorText: isEmpty['city'] == false
-                                    ? null
-                                    : AppLocalizations.of(context)!
-                                        .requiredField,
-                              ),
-                            ),
-                            SizedBox(width: AppDimensions.xxlPadding),
-                            Flexible(
-                              child: AppTextFormField(
-                                onSumbit: () {},
-                                keyboardType: TextInputType.name,
-                                labelText:
-                                    AppLocalizations.of(context)!.countryField,
-                                controller: countryController,
-                                errorText: isEmpty['country'] == false
-                                    ? null
-                                    : AppLocalizations.of(context)!
-                                        .requiredField,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Flexible(
-                              child: AppTextFormField(
-                                onSumbit: () {},
-                                labelText:
-                                    AppLocalizations.of(context)!.zipcodeField,
-                                controller: zipcodeController,
-                                keyboardType: TextInputType.number,
-                                errorText: isEmpty['zipcode'] == false
-                                    ? null
-                                    : AppLocalizations.of(context)!
-                                        .requiredField,
-                              ),
-                            ),
-                            SizedBox(width: 200),
-                          ],
-                        ),
-                        const SizedBox(height: AppDimensions.xxxlPadding),
-                        RaisedButton(
-                          onPressed: () {},
-                          elevation: 0,
-                          color: Theme.of(context).primaryColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              AppDimensions.bigBorderRadius,
-                            ),
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.useMyLocation,
-                            style: AppTheming.buttonTextTheme,
-                          ),
-                        ),
-                        const SizedBox(height: AppDimensions.defaultPadding),
-                        RaisedButton(
-                          onPressed: () async {
-                            userViewModel.deleteUser();
-                            Navigator.of(context).pop(null);
-                          },
-                          elevation: 0,
-                          color: Theme.of(context).errorColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(
-                              AppDimensions.bigBorderRadius,
-                            ),
-                          ),
-                          child: Text(
-                            AppLocalizations.of(context)!.deleteUser,
-                            style: AppTheming.buttonTextTheme,
-                          ),
-                        )
-                      ],
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
+                );
+              }),
     );
   }
 }

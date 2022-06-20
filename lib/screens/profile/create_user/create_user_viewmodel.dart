@@ -2,26 +2,31 @@ import 'dart:async';
 
 import 'package:albums_mvvm/repository/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
+import '../../../models/input_model.dart';
+import '../../../models/output_model.dart';
 import '../../../models/user_model.dart';
 
 class CreateUserViewModel {
   final UserRepository _userRepo;
-  bool _canSubmit = true;
-  UserModel? _currentUser;
-  final RegExp nameRegExp = RegExp('[a-zA-Z]');
-  final RegExp numberRegExp = RegExp(r'\d');
-  final RegExp emailRegExp = RegExp('[a-zA-Z]+@[a-zA-Z]+.[a-zA-Z]');
+  final Input input;
+  late Output<UserModel?> output;
 
-  CreateUserViewModel({UserRepository? userRepository})
-      : _userRepo = userRepository ?? UserRepository();
+  bool _canSubmit = true;
+  final RegExp _nameRegExp = RegExp('[a-zA-Z]');
+  final RegExp _numberRegExp = RegExp(r'\d');
+  final RegExp _emailRegExp = RegExp('[a-zA-Z]+@[a-zA-Z]+.[a-zA-Z]');
+
+  CreateUserViewModel(this.input, {UserRepository? userRepository})
+      : _userRepo = userRepository ?? UserRepository() {
+    output = Output<UserModel?>(_getUserModel());
+  }
+
+  Stream<UserModel?> _getUserModel() => input.subject
+      .flatMap((_) => _userRepo.fetchLocalUser().map((user) => user));
 
   void deleteUser() {
     _userRepo.setLocalUser(null);
-  }
-
-  Future<UserModel?> fetchUser() async {
-    _currentUser = await _userRepo.fetchLocalUser().first;
-    return _currentUser;
   }
 
   void setLocalUser(UserModel? user) {
@@ -86,17 +91,17 @@ class CreateUserViewModel {
 
   bool validateName(String name) {
     if (name.length < 3) return false;
-    if (!nameRegExp.hasMatch(name)) return false;
-    if (numberRegExp.hasMatch(name)) return false;
+    if (!_nameRegExp.hasMatch(name)) return false;
+    if (_numberRegExp.hasMatch(name)) return false;
     return true;
   }
 
   bool validateEmail(String email) {
-    return emailRegExp.hasMatch(email);
+    return _emailRegExp.hasMatch(email);
   }
 
   bool validateNumber(String number) {
-    return numberRegExp.hasMatch(number);
+    return _numberRegExp.hasMatch(number);
   }
 
   String get emptyFormText {
