@@ -8,7 +8,9 @@ class Validator {
       r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   bool validateName(String value) {
-    return _nameRegExp.hasMatch(value) && value.length > 3;
+    return _nameRegExp.hasMatch(value) &&
+        value.length >= 3 &&
+        !_numberRegExp.hasMatch(value);
   }
 
   bool validateEmail(String value) {

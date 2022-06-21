@@ -220,16 +220,14 @@ class CreateUserViewModel {
       if (value != ErrorType.none) _canSubmit = false;
     });
 
-    if (_userScreenState!.userState == UserState.create) {
-      if (resultMap[FieldKey.firstName] != ErrorType.none) firstName.text = '';
-      if (resultMap[FieldKey.lastName] != ErrorType.none) lastName.text = '';
-      if (resultMap[FieldKey.emailAddress] != ErrorType.none) email.text = '';
-      if (resultMap[FieldKey.phoneNumber] != ErrorType.none) phone.text = '';
-      if (resultMap[FieldKey.streetAddress] != ErrorType.none) street.text = '';
-      if (resultMap[FieldKey.city] != ErrorType.none) city.text = '';
-      if (resultMap[FieldKey.country] != ErrorType.none) country.text = '';
-      if (resultMap[FieldKey.zipcode] != ErrorType.none) zipcode.text = '';
-    }
+    if (resultMap[FieldKey.firstName] != ErrorType.none) firstName.text = '';
+    if (resultMap[FieldKey.lastName] != ErrorType.none) lastName.text = '';
+    if (resultMap[FieldKey.emailAddress] != ErrorType.none) email.text = '';
+    if (resultMap[FieldKey.phoneNumber] != ErrorType.none) phone.text = '';
+    if (resultMap[FieldKey.streetAddress] != ErrorType.none) street.text = '';
+    if (resultMap[FieldKey.city] != ErrorType.none) city.text = '';
+    if (resultMap[FieldKey.country] != ErrorType.none) country.text = '';
+    if (resultMap[FieldKey.zipcode] != ErrorType.none) zipcode.text = '';
 
     return resultMap;
   }

@@ -19,6 +19,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   final _form = GlobalKey<FormState>();
   final userVM = CreateUserViewModel(Input(BehaviorSubject()));
   bool canApply = false;
+  bool _isInit = false;
 
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -53,7 +54,8 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
   }
 
   void setInitialUser(UserScreenState userState) {
-    if (userState.userState == UserState.edit) {
+    if (userState.userState == UserState.edit && _isInit == false) {
+      _isInit = true;
       final user = userState.user;
       firstNameController.text = user!.firstName;
       lastNameController.text = user.lastName;
@@ -140,7 +142,6 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                               child: AppTextFormField(
                                 errorType: errorMap[FieldKey.firstName]!,
                                 onChanged: (val) {
-                                  //todo: fix problem when editing
                                   setErrorTypeToDefault(FieldKey.firstName);
                                 },
                                 keyboardType: TextInputType.text,
