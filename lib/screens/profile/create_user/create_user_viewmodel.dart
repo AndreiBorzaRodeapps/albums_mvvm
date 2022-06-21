@@ -34,6 +34,15 @@ class UserScreenState {
   UserModel? user;
 
   UserScreenState(this.userState, {this.user});
+
+  @override
+  bool operator ==(Object other) =>
+      other is UserScreenState &&
+      userState == other.userState &&
+      user == other.user;
+
+  @override
+  int get hashCode => userState.hashCode ^ user.hashCode;
 }
 
 class CreateUserViewModel {
@@ -74,7 +83,7 @@ class CreateUserViewModel {
     _userRepo.setLocalUser(null);
   }
 
-  void setLocalUser(UserModel? user) {
+  void _setLocalUser(UserModel? user) {
     _userRepo.setLocalUser(user);
   }
 
@@ -97,7 +106,7 @@ class CreateUserViewModel {
         ),
       );
 
-      setLocalUser(user);
+      _setLocalUser(user);
       return true;
     }
     return false;

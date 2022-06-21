@@ -34,6 +34,7 @@ class IconBottomBar extends StatelessWidget {
           ),
         ),
         Text(
+          key: ValueKey('iconBottomBar: $text-text'),
           text,
           style: selected
               ? AppTheming.selectedLabelStyle

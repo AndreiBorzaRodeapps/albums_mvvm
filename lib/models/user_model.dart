@@ -37,6 +37,18 @@ class UserAddress {
       zipcode: addressJson[jsonZipcode] as String,
     );
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserAddress &&
+        other.streetAddress == streetAddress &&
+        other.city == city &&
+        other.country == country &&
+        other.zipcode == zipcode;
+  }
+
+  @override
+  int get hashCode => int.parse(zipcode);
 }
 
 class UserModel {
@@ -84,4 +96,17 @@ class UserModel {
     if (firstName != null) return firstName[0].toUpperCase();
     return '?';
   }
+
+  @override
+  bool operator ==(Object other) {
+    return other is UserModel &&
+        other.firstName == firstName &&
+        other.lastName == lastName &&
+        other.emailAddress == emailAddress &&
+        other.phoneNumber == phoneNumber &&
+        other.userAddress == userAddress;
+  }
+
+  @override
+  int get hashCode => int.parse(phoneNumber + userAddress.zipcode);
 }

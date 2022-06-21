@@ -45,6 +45,16 @@ class ProfileScreenState {
         ? Icons.account_circle
         : Icons.list_alt_sharp;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      other is ProfileScreenState &&
+      other.profileState == profileState &&
+      other.sendUser == sendUser;
+
+  @override
+  int get hashCode =>
+      sendUser.hashCode * (profileState == ProfileState.unknown ? 2 : 3);
 }
 
 class ProfileViewModel {

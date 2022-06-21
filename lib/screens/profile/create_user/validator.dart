@@ -18,6 +18,8 @@ class Validator {
   }
 
   bool validateNumber(String value) {
-    return _numberRegExp.hasMatch(value) && value.length > 5;
+    return _numberRegExp.hasMatch(value) &&
+        value.length > 5 &&
+        !_nameRegExp.hasMatch(value);
   }
 }
