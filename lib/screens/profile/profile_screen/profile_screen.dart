@@ -1,11 +1,12 @@
 import 'package:albums_mvvm/screens/profile/create_user/create_user_screen.dart';
-import 'package:albums_mvvm/screens/profile/profile_viewmodel.dart';
+import 'package:albums_mvvm/screens/profile/profile_screen/profile_viewmodel.dart';
 import 'package:albums_mvvm/theming/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:rxdart/subjects.dart';
 
-import '../../theming/app_dimensions.dart';
-import '../../widgets/album_tile.dart';
+import '../../../theming/app_dimensions.dart';
+import '../../../widgets/album_tile.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -64,7 +65,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   builder: (ctx) => CreateUserScreen(),
                 ),
               )
-                  .then((_) {
+                  .then((string) {
+                profileVM.showToast(string);
+
                 profileVM.input.loadUser.add(true);
               });
             },

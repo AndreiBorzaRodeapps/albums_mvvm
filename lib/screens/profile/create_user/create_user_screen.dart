@@ -82,7 +82,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
       );
 
       if (userVM.setUserFromCurrentInputs() == true) {
-        Navigator.of(context).pop();
+        Navigator.of(context).pop('create');
       }
     });
   }
@@ -94,7 +94,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
       appBar: AppBar(
         leading: InkWell(
           onTap: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop('back');
           },
           child: Center(
             child: Text(
@@ -122,8 +122,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
       body: StreamBuilder<UserScreenState>(
           stream: userVM.output.stream,
           builder: (context, snapshot) {
-            UserScreenState state = snapshot.data as UserScreenState;
-            setInitialUser(state);
+            setInitialUser(snapshot.data!);
             //
             return Container(
               height: MediaQuery.of(context).size.height,
@@ -270,7 +269,7 @@ class _CreateUserScreenState extends State<CreateUserScreen> {
                         RaisedButton(
                           onPressed: () async {
                             userVM.deleteUser();
-                            Navigator.of(context).pop();
+                            Navigator.of(context).pop('delete');
                           },
                           elevation: 0,
                           color: Theme.of(context).errorColor,

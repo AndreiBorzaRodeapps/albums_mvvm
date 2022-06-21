@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:albums_mvvm/models/album_model.dart';
-
 class UserAddress {
   final String streetAddress;
   final String city;
@@ -93,8 +91,7 @@ class UserModel {
   }
 
   String get firstCharacter {
-    if (firstName != null) return firstName[0].toUpperCase();
-    return '?';
+    return firstName[0].toUpperCase();
   }
 
   @override

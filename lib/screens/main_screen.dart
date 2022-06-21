@@ -8,7 +8,7 @@ import '../models/album_model.dart';
 import '../widgets/app_nav_bar.dart';
 import 'friends/friends_screen.dart';
 import 'news/news_screen.dart';
-import 'profile/profile_screen.dart';
+import 'profile/profile_screen/profile_screen.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

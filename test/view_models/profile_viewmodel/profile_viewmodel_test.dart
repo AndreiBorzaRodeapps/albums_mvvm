@@ -1,6 +1,6 @@
 import 'package:albums_mvvm/models/user_model.dart';
 import 'package:albums_mvvm/repository/user_repository.dart';
-import 'package:albums_mvvm/screens/profile/profile_viewmodel.dart';
+import 'package:albums_mvvm/screens/profile/profile_screen/profile_viewmodel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';

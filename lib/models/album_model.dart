@@ -22,8 +22,8 @@ class AlbumModel {
   String getFirstCharacter({bool upperCase = false}) {
     if (title.isNotEmpty) {
       return upperCase == true
-          ? this.title[0].toUpperCase()
-          : this.title[0].toLowerCase();
+          ? title[0].toUpperCase()
+          : title[0].toLowerCase();
     }
     return '';
   }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 
 class AppTheming {
+  static const Color normalToastBackground = Colors.black87;
   static const Color _indigo900 = Color(0xFF1A237E);
   static const Color _indigo200 = Color(0xFF9FA8DA);
   static const Color _indigo600 = Color(0xFF3949AB);

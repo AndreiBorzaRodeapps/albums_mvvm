@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:albums_mvvm/repository/user_repository.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../models/user_model.dart';
+import '../../../models/user_model.dart';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:flutter/material.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../../../theming/app_theme.dart';
 
 enum ProfileState { unknown, user }
 
@@ -74,6 +77,23 @@ class ProfileViewModel {
                   : ProfileScreenState(ProfileState.user, sendUser: user),
             ),
       );
+
+  void showToast(String value) {
+    if (value == 'back') return;
+
+    Fluttertoast.showToast(
+        backgroundColor: AppTheming.normalToastBackground,
+        msg: value == 'create'
+            ? "User created successfully!"
+            : "User deleted successfully!",
+        // message
+        toastLength: Toast.LENGTH_SHORT,
+        // length
+        gravity: ToastGravity.BOTTOM,
+        // location
+        timeInSecForIosWeb: 1 // duration
+        );
+  }
 }
 
 class Input {
