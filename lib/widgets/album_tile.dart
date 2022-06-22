@@ -5,12 +5,14 @@ import '../screens/album_details/album_details_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AlbumTile extends StatelessWidget {
-  final AlbumModel currentAlbum;
   final IconData icon;
   final VoidCallback onTileTap;
+  final String title;
+  final String subTitle;
 
   AlbumTile({
-    required this.currentAlbum,
+    required this.title,
+    required this.subTitle,
     required this.icon,
     required this.onTileTap,
   });
@@ -18,7 +20,7 @@ class AlbumTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      key: Key('tile-${currentAlbum.id}'),
+      key: Key('tile-$subTitle'),
       margin: const EdgeInsets.symmetric(vertical: AppDimensions.xxsPadding),
       height: AppDimensions.defaultTileHeight,
       child: Padding(
@@ -55,19 +57,19 @@ class AlbumTile extends StatelessWidget {
               Expanded(
                 child: ListTile(
                   subtitle: Text(
-                    AppLocalizations.of(context)!.albumWithId(currentAlbum.id),
+                    subTitle,
                   ),
                   onTap: null,
                   // in caz ca se poate merge la details doar de pe sageata
                   title: Text(
                     overflow: TextOverflow.ellipsis,
-                    currentAlbum.title as String,
+                    title,
                     style: Theme.of(context).textTheme.headline4,
                   ),
                 ),
               ),
               IconButton(
-                key: Key('details-${currentAlbum.id}'),
+                key: Key('details-$subTitle'),
                 onPressed: onTileTap,
                 icon: Icon(
                   Icons.chevron_right,

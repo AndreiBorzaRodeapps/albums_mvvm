@@ -4,7 +4,6 @@ import './screens/album_list/albums_list_screen.dart';
 import './screens/friends/friends_screen.dart';
 import './screens/news/news_screen.dart';
 import './screens/no_internet/no_internet_screen.dart';
-import './screens/profile/profile_screen.dart';
 import './screens/main_screen.dart';
 import './theming/app_theme.dart';
 
@@ -12,20 +11,22 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: [
+      localizationsDelegates: const [
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
+      supportedLocales: const [
         Locale('en', ''),
         Locale('ro', ''),
       ],
@@ -38,7 +39,6 @@ class MyApp extends StatelessWidget {
         MySplashScreen.routeName: (_) => MySplashScreen(),
         AlbumsListScreen.routeName: (_) => AlbumsListScreen(),
         FriendsScreen.routeName: (_) => FriendsScreen(),
-        ProfileScreen.routeName: (_) => ProfileScreen(),
         NoInternetScreen.routeName: (_) => NoInternetScreen(),
         NewsScreen.routeName: (_) => NewsScreen(),
       },

@@ -20,17 +20,17 @@ void main() {
       expect(find.byType(AlbumsListScreen), findsOneWidget);
       expect(find.textContaining('My Albums'), findsOneWidget);
 
-      final findFirstTile = find.byKey(const Key('tile-13'));
+      final findFirstTile = find.byKey(const Key('tile-Album with id: 13'));
       expect(findFirstTile, findsOneWidget);
 
       //if albumId is even, after tap should display it's details screen
       await tester.drag(findFirstTile, const Offset(0, -500.0));
       await tester.pumpAndSettle();
 
-      final widget54 = find.byKey(const Key('tile-54'));
+      final widget54 = find.byKey(const Key('tile-Album with id: 54'));
       expect(widget54, findsOneWidget);
 
-      final goToDetailsWidget54 = find.byKey(const Key('details-54'));
+      final goToDetailsWidget54 = find.byKey(const Key('details-Album with id: 54'));
       expect(goToDetailsWidget54, findsOneWidget);
 
       await tester.tap(goToDetailsWidget54);

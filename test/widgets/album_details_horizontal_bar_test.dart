@@ -4,7 +4,6 @@ import 'package:albums_mvvm/widgets/album_details_horizontal_bar.dart';
 import 'package:albums_mvvm/widgets/icon_text_button.dart';
 import 'package:albums_mvvm/widgets/universal_app_divider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/basic.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:albums_mvvm/theming/app_theme.dart';

@@ -20,5 +20,27 @@
     "addAComment": "Add a comment",
     "photoWithId": "Photo with id:",
     "fetchedOfflineAlbums": "Fetched offline albums",
-    "noInternetConnection": "No internet connection!"
+    "noInternetConnection": "No internet connection!",
+    "requiredField": "Required",
+    "firstNameField": "FIRST NAME",
+    "lastNameField": "LAST NAME",
+    "emailAddressField": "EMAIL ADDRESS",
+    "phoneNumberField": "PHONE NUMBER",
+    "streetAddressField": "STREET ADDRESS",
+    "cityField": "CITY",
+    "countryField": "COUNTRY",
+    "zipcodeField": "ZIPCODE",
+    "useMyLocation": "Use my location",
+    "deleteUser": "Delete user",
+    "apply": "Apply",
+    "yourProfile": "Your Profile",
+    "memberSince": "Member since",
+    "contactInfo": "Contact Info",
+    "unknown": "Unknown",
+    "notAMember": "Not a member",
+    "emailAddress": "Email address",
+    "onlyLetter": "Only letters!",
+    "onlyDigits": "Only digits!",
+    "invalidEmail": "Invalid email!"
+
 }
